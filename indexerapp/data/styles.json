@@ -1,0 +1,48 @@
+{
+  "status" : "success",
+  "data" : [
+    {
+      "id" : 1,
+      "category" : {
+        "id" : 1,
+        "createDate" : "2012-03-21 20:06:45",
+        "name" : "British Origin Ales"
+      },
+      "srmMax" : "5",
+      "ibuMax" : "40",
+      "srmMin" : "5",
+      "description" : "Classic English pale ales are golden to copper colored and display earthy, herbal English-variety hop character. Note that \"earthy, herbal English-variety hop character\" is the perceived end, but may be a result of the skillful use of hops of other national origins. Medium to high hop bitterness, flavor, and aroma should be evident. This medium-bodied pale ale has low to medium malt flavor and aroma. Low caramel character is allowable. Fruity-ester flavors and aromas are moderate to strong. Chill haze may be in evidence only at very cold temperatures. The absence of diacetyl is desirable, though, diacetyl (butterscotch character) is acceptable and characteristic when at very low levels.",
+      "fgMin" : "1.008",
+      "ibuMin" : "20",
+      "createDate" : "2012-03-21 20:06:45",
+      "fgMax" : "1.016",
+      "abvMax" : "5.5",
+      "ogMin" : "1.04",
+      "abvMin" : "4.5",
+      "name" : "Classic English-Style Pale Ale",
+      "categoryId" : 1
+    },
+    {
+      "id" : 2,
+      "category" : {
+        "id" : 1,
+        "createDate" : "2012-03-21 20:06:45",
+        "name" : "British Origin Ales"
+      },
+      "srmMax" : "14",
+      "ibuMax" : "63",
+      "srmMin" : "6",
+      "description" : "Most traditional interpretations of English-style India pale ales are characterized by medium-high hop bitterness with a medium to medium-high alcohol content. Hops from a variety of origins may be used to contribute to a high hopping rate. Earthy and herbal English-variety hop character is the perceived end, but may be a result of the skillful use of hops of other national origins. The use of water with high mineral content results in a crisp, dry beer, sometimes with subtle and balanced character of sulfur compounds. This pale gold to deep copper-colored ale has a medium to high, flowery hop aroma and may have a medium to strong hop flavor (in addition to the hop bitterness). English-style India pale ales possess medium maltiness and body. Fruity-ester flavors and aromas are moderate to very strong. Diacetyl can be absent or may be perceived at very low levels. Chill haze is allowable at cold temperatures. Hops of other origins may be used for bitterness or approximating traditional English character.",
+      "fgMin" : "1.012",
+      "ibuMin" : "35",
+      "createDate" : "2012-03-21 20:06:45",
+      "fgMax" : "1.018",
+      "abvMax" : "7",
+      "ogMin" : "1.05",
+      "abvMin" : "5",
+      "name" : "English-Style India Pale Ale",
+      "categoryId" : 1
+    }
+  ],
+  "message" : "Request Successful"
+}
