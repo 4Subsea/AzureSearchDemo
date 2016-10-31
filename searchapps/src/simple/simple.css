@@ -38,6 +38,11 @@
 .search-button-row {
     margin-top: 20px;
 }
+
+.search-button {
+    font-size: 14px;
+}
+
 .g-blue {
     color: #4C90F5;
 }
