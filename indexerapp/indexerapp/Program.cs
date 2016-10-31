@@ -7,23 +7,24 @@ namespace indexerapp
 {
     class Program
     {
-        private static readonly string ApiKey = "5120b367e367474b023f7829a2b536b6";
+        private static string _apiKey;
 
         private static string StyleUriFor()
         {
-            return $"http://api.brewerydb.com/v2/styles?key={ApiKey}";
+            return $"http://api.brewerydb.com/v2/styles?key={_apiKey}";
         }
 
         private static string BeerUriFor(int page = 1, int styleId = 1)
         {
-            var apiKey = "5120b367e367474b023f7829a2b536b6";
-            return $"http://api.brewerydb.com/v2/beers?key={apiKey}&p={page}&styleId={styleId}&withBreweries=Y";
+            return $"http://api.brewerydb.com/v2/beers?key={_apiKey}&p={page}&styleId={styleId}&withBreweries=Y";
         }
 
         static void Main(string[] args)
         {
+            _apiKey = args[0];
+
             var styles = Styles.Load(StyleUriFor());
-            foreach (var style in styles)
+            foreach (var style in styles.Take(3))
             {
                 Console.WriteLine($"Style: {style.Name}:\n\n");
                 var beers = LoadBeers(style.Id);
