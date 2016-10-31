@@ -8,6 +8,16 @@
     margin: 20px;
 }
 
+.search-title::after {
+    content: "Norway";
+    font-size: 16px;
+    font-family: "Roboto";
+    color: #4285f4;
+    position: relative;
+    top: 17px;
+    right: 70px;
+}
+
 .search-title span {
     margin: -12px;
 }
@@ -25,13 +35,9 @@
     height: 2.5em;
 }
 
-.search-button {
-    margin: 20px auto;
-    display: block;
-    border-radius: 2px;
-    font-size: 0.8em;
+.search-button-row {
+    margin-top: 20px;
 }
-
 .g-blue {
     color: #4C90F5;
 }
@@ -53,4 +59,5 @@
     color: #808080;
     border: none;
     font-weight: bold;
+    border-radius: 2px;
 }
