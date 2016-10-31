@@ -19,7 +19,7 @@ define('app',['exports'], function (exports) {
         App.prototype.configureRouter = function configureRouter(config, router) {
             this.router = router;
             config.title = 'Azure Search Demo';
-            config.map([{ route: ['', 'home'], name: 'home', moduleId: 'home/index' }, { route: 'simple', name: 'simple', moduleId: 'simple/index', nav: true }]);
+            config.map([{ route: ['', 'home'], name: 'home', moduleId: 'home/home' }, { route: 'simple', name: 'simple', moduleId: 'simple/simple', nav: true }]);
         };
 
         return App;
@@ -75,21 +75,21 @@ define('main',['exports', './environment'], function (exports, _environment) {
   }
 });
 define('home/index',["exports"], function (exports) {
-    "use strict";
+  "use strict";
 
-    Object.defineProperty(exports, "__esModule", {
-        value: true
-    });
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-    function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-            throw new TypeError("Cannot call a class as a function");
-        }
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+      throw new TypeError("Cannot call a class as a function");
     }
+  }
 
-    var Index = exports.Index = function Index() {
-        _classCallCheck(this, Index);
-    };
+  var Index = exports.Index = function Index() {
+    _classCallCheck(this, Index);
+  };
 });
 define('resources/index',["exports"], function (exports) {
   "use strict";
@@ -101,23 +101,59 @@ define('resources/index',["exports"], function (exports) {
   function configure(config) {}
 });
 define('simple/index',["exports"], function (exports) {
-    "use strict";
+  "use strict";
 
-    Object.defineProperty(exports, "__esModule", {
-        value: true
-    });
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
 
-    function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-            throw new TypeError("Cannot call a class as a function");
-        }
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+      throw new TypeError("Cannot call a class as a function");
     }
+  }
 
-    var Index = exports.Index = function Index() {
-        _classCallCheck(this, Index);
-    };
+  var Index = exports.Index = function Index() {
+    _classCallCheck(this, Index);
+  };
+});
+define('simple/simple',["exports"], function (exports) {
+  "use strict";
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+      throw new TypeError("Cannot call a class as a function");
+    }
+  }
+
+  var Simple = exports.Simple = function Simple() {
+    _classCallCheck(this, Simple);
+  };
+});
+define('home/home',["exports"], function (exports) {
+  "use strict";
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+      throw new TypeError("Cannot call a class as a function");
+    }
+  }
+
+  var Home = exports.Home = function Home() {
+    _classCallCheck(this, Home);
+  };
 });
 define('text!app.html', ['module'], function(module) { module.exports = "<template>\n  <router-view></router-view>\n</template>"; });
 define('text!home/index.html', ['module'], function(module) { module.exports = "<template>\n    <h1>At Home</h1>\n</template>"; });
 define('text!simple/index.html', ['module'], function(module) { module.exports = "<template>\n    <h1>In simple search</h1>\n</template>"; });
+define('text!simple/simple.html', ['module'], function(module) { module.exports = "<template>\n    <h1>In simple search</h1>\n</template>"; });
+define('text!home/home.html', ['module'], function(module) { module.exports = "<template>\n    <h1>At Home</h1>\n</template>"; });
 //# sourceMappingURL=app-bundle.js.map
