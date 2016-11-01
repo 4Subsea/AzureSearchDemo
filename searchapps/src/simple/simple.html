@@ -2,7 +2,7 @@
 	<require from="./simple.css"></require>
 
 	<div class="container">
-		<div class="search-container">
+		<div class="search-container ${results.length > 0 ? 'has-results' : ''}">
 			<div class="text-xs-center search-title-container">
 				<h1 class="search-title">
 					<span class="g-blue">S</span>
@@ -13,7 +13,7 @@
 					<span class="g-red">h</span>
 				</h1>
 			</div>
-			<form submit.delegate="search('hei')">
+			<form submit.delegate="search()">
 				<div class="row">
 					<input type="text" value.bind="queryText" class="search-input col-md-6 col-xs-8 offset-xs-2 offset-md-3">
 				</div>
