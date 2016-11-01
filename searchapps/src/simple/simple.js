@@ -13,4 +13,8 @@ export class Simple {
         console.log(this.queryText);
         this.api.search(this.queryText).then(results => this.results = results);
     }
+
+    clear() {
+        this.results = [];
+    }
 }
