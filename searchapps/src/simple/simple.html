@@ -13,18 +13,26 @@
 					<span class="g-red">h</span>
 				</h1>
 			</div>
-			<form>
+			<form submit.delegate="search('hei')">
 				<div class="row">
-					<input type="text" class="search-input col-md-6 col-xs-8 offset-xs-2 offset-md-3">
+					<input type="text" value.bind="queryText" class="search-input col-md-6 col-xs-8 offset-xs-2 offset-md-3">
 				</div>
 				<div class="search-button-row">
 					<input type="submit" value="Search Search" class="btn btn-primary search-button">
-					<input type="submit" value="I'm Feeling Tired" class="btn btn-primary search-button">
+					<input type="button" value="I'm Feeling Tired" class="btn btn-primary search-button">
 				</div>
 
 			</form>
 		</div>
-
+		<div>
+			<ul class="list-group">
+				<li repeat.for="result of results" class="list-group-item">
+					<h4 class="list-group-item-heading">${result.name}</h4>
+					<div class="list-group-item-text">${result.brewery}</div>
+					<div class="list-group-item-text">${result.type}</div>
+				</li>
+			</ul>
+		</div>
 	</div>
 
 </template>
