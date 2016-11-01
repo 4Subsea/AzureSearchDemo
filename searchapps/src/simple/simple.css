@@ -1,0 +1,68 @@
+.search-container {
+    margin-top: 20vh;
+}
+
+.search-title {
+    font-family: 'Montserrat';
+    font-size: 5em;
+    margin: 20px;
+}
+
+.search-title::after {
+    content: "Norway";
+    font-size: 16px;
+    font-family: "Roboto";
+    color: #4285f4;
+    position: relative;
+    top: 17px;
+    right: 70px;
+}
+
+.search-title span {
+    margin: -12px;
+}
+
+.search-title-country {
+    font-size: 16px;
+    font-family: "Roboto";
+    color: #4285f4;
+    position: relative;
+    top: 17px;
+    right: 70px;
+}
+
+.search-input {
+    height: 2.5em;
+}
+
+.search-button-row {
+    margin-top: 20px;
+}
+
+.search-button {
+    font-size: 14px;
+}
+
+.g-blue {
+    color: #4C90F5;
+}
+
+.g-red {
+    color: #ED4D3C;
+}
+
+.g-yellow {
+    color: #FBC402;
+}
+
+.g-green {
+    color: #3BB15D;
+}
+
+.btn-primary {
+    background-color: #F5F5F5;
+    color: #808080;
+    border: none;
+    font-weight: bold;
+    border-radius: 2px;
+}
