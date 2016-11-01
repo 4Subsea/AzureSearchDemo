@@ -1,3 +1,3 @@
 # Azure Search Demo
 
-The UI can be reached by this url: https://4subsea.github.io/AzureSearchDemo/ui/
+The UI can be reached by this url: https://4subsea.github.io/AzureSearchDemo/searchapps/#simple
