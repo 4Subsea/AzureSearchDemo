@@ -3,8 +3,8 @@ export class App {
         this.router = router;
         config.title = 'Azure Search Demo';
         config.map([
-            { route: ['', 'home'], name: 'home', moduleId: 'home/home' },
-            { route: 'simple', name: 'simple', moduleId: 'simple/simple', nav: true }
+            { route: ['', 'home'], name: 'home', moduleId: 'home/home', title: 'Home' },
+            { route: 'simple', name: 'simple', moduleId: 'simple/simple', title: 'Simple', nav: true }
         ]);
     }
 }
