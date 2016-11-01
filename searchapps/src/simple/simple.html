@@ -24,14 +24,15 @@
 
 			</form>
 		</div>
-		<div>
-			<ul class="list-group">
-				<li repeat.for="result of results" class="list-group-item">
-					<h4 class="list-group-item-heading">${result.name}</h4>
-					<div class="list-group-item-text">${result.brewery}</div>
-					<div class="list-group-item-text">${result.type}</div>
-				</li>
-			</ul>
+		<div class="row">
+			<div repeat.for="result of results" class="card col-md-4 result">
+				<img class="card-img-top brand-img" src="https://unsplash.it/500/300/" alt="Card image cap">
+				<div class="card-block">
+					<h4 class="card-title">${result.name}</h4>
+					<p class="card-text">${result.brewery}</p>
+					<p class="card-text">${result.type}</p>
+				</div>
+			</div>
 		</div>
 	</div>
 

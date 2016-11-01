@@ -65,3 +65,11 @@
     font-weight: bold;
     border-radius: 2px;
 }
+
+.brand-img {
+    width: 100%;
+}
+
+.result {
+    padding: 0;
+}
