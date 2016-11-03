@@ -1,10 +1,9 @@
-﻿namespace datasource
+﻿namespace DataSource.Styles
 
 open System
 open FSharp.Data
 
 type StyleJson = JsonProvider<"../data/styles.json">
-
 
 [<AutoOpen>]
 type Style(id: int, name: string) =
@@ -13,13 +12,11 @@ type Style(id: int, name: string) =
 
 [<AutoOpen>]
 type Styles =
-    static member Load(uri: string) = 
+    static member Load(apiKey: string) = 
+        let uri = String.Format("http://api.brewerydb.com/v2/styles?key={0}", apiKey)
         let styles= StyleJson.Load(uri)
 
         query {
                 for b in styles.Data do
                 select (Style(b.Id, b.Name))
             }
-        
-
-
