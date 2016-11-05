@@ -1,5 +1,4 @@
-let searchResults = [
-    {
+let searchResults = [{
         name: 'Nissefar',
         brewery: 'Nøgne Ø',
         type: 'Porter'
@@ -16,16 +15,18 @@ let searchResults = [
     }
 ];
 
-export class SearchApi {
-    // search(query) {
-    //     return new Promise(resolve => {
-    //         resolve(searchResults);
-    //     });
-    // }
+let suggestions = ['Nissefar', 'Bestefar', 'Oldefar'];
 
+export class SearchApi {
     search(query) {
         return new Promise(resolve => {
             resolve(searchResults)
         });
+    }
+
+    suggest(query) {
+        return new Promise(resolve => {
+            resolve(suggestions)
+        })
     }
 }
