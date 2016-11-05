@@ -190,7 +190,6 @@ define('simple/simple',['exports', 'services/search-api'], function (exports, _s
             var _api = this.api;
             $(".search-input").autocomplete({
                 source: function source(request, response) {
-                    debugger;
                     _api.suggest(request.term).then(function (results) {
                         return response(results);
                     });
