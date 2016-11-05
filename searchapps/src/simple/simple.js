@@ -23,7 +23,6 @@ export class Simple {
         let _api = this.api;
         $(".search-input").autocomplete({
             source: function(request, response) {
-                debugger;
                 _api
                     .suggest(request.term)
                     .then(results => response(results));
