@@ -119,6 +119,18 @@ namespace IndexerApp.Dsl
             return this;
         }
 
+        public IndexSchemaBuilder<TDocument> Decimal<TProperty>(Expression<Func<TDocument, TProperty>> propertyName, bool filterable = true)
+        {
+            Add(Field(propertyName, DataType.Double, false, filterable));
+            return this;
+        }
+
+        public IndexSchemaBuilder<TDocument> Boolean<TProperty>(Expression<Func<TDocument, TProperty>> propertyName, bool filterable = true)
+        {
+            Add(Field(propertyName, DataType.Boolean, false, filterable));
+            return this;
+        }
+
         public IndexSchemaBuilder<TDocument> DateTime<TProperty>(Expression<Func<TDocument, TProperty>> propertyName, bool filterable = true)
         {
             Add(Field(propertyName, DataType.DateTimeOffset, false, filterable));

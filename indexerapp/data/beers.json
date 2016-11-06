@@ -1,1 +1,106 @@
-{"currentPage":1,"numberOfPages":1,"totalResults":1,"data":[{"id":"nAAGBI","name":"Bestefar","nameDisplay":"Bestefar","description":"Belgian strong ale with the good old taste from when all the farms used to brew their own beer. A dark strong ale, well balanced and full of malty and fruity flavours. We make living beer, not pasteurised nor filtered.","abv":"9","availableId":4,"styleId":64,"isOrganic":"N","labels":{"icon":"https:\/\/s3.amazonaws.com\/brewerydbapi\/beer\/nAAGBI\/upload_pj3KvX-icon.png","medium":"https:\/\/s3.amazonaws.com\/brewerydbapi\/beer\/nAAGBI\/upload_pj3KvX-medium.png","large":"https:\/\/s3.amazonaws.com\/brewerydbapi\/beer\/nAAGBI\/upload_pj3KvX-large.png"},"status":"verified","statusDisplay":"Verified","createDate":"2013-05-17 21:51:38","updateDate":"2015-12-17 04:04:20","available":{"id":4,"name":"Seasonal","description":"Available at the same time of year, every year."},"style":{"id":64,"categoryId":5,"category":{"id":5,"name":"Belgian And French Origin Ales","createDate":"2012-03-21 20:06:46"},"name":"Belgian-Style Dark Strong Ale","shortName":"Belgian Dark Strong","description":"Belgian dark strong ales are amber to dark brown in color. Often, though not always, brewed with dark Belgian \"candy\" sugar, these beers can be well attenuated, ranging from medium to full-bodied. The perception of hop bitterness is low to medium, with hop flavor and aroma also in this range. Fruity complexity along with the soft flavors of roasted malts add distinct character. The alcohol strength of these beers can often be deceiving to the senses. The intensity of malt character can be rich, creamy, and sweet with intensities ranging from medium to high. Very little or no diacetyl is perceived. Herbs and spices are sometimes used to delicately flavor these strong ales. Low levels of phenolic spiciness from yeast byproducts may also be perceived. Chill haze is allowable at cold temperatures.","ibuMin":"20","ibuMax":"50","abvMin":"7","abvMax":"11","srmMin":"9","srmMax":"35","ogMin":"1.064","fgMin":"1.012","fgMax":"1.024","createDate":"2012-03-21 20:06:46","updateDate":"2015-04-07 15:32:23"},"breweries":[{"id":"JiKMgI","name":"HaandBryggeriet","nameShortDisplay":"HaandBryggeriet","website":"http:\/\/www.haandbryggeriet.net\/","isOrganic":"N","images":{"icon":"https:\/\/s3.amazonaws.com\/brewerydbapi\/brewery\/JiKMgI\/upload_7e3iiW-icon.png","medium":"https:\/\/s3.amazonaws.com\/brewerydbapi\/brewery\/JiKMgI\/upload_7e3iiW-medium.png","large":"https:\/\/s3.amazonaws.com\/brewerydbapi\/brewery\/JiKMgI\/upload_7e3iiW-large.png","squareMedium":"https:\/\/s3.amazonaws.com\/brewerydbapi\/brewery\/JiKMgI\/upload_7e3iiW-squareMedium.png","squareLarge":"https:\/\/s3.amazonaws.com\/brewerydbapi\/brewery\/JiKMgI\/upload_7e3iiW-squareLarge.png"},"status":"verified","statusDisplay":"Verified","createDate":"2012-01-03 02:41:56","updateDate":"2015-12-22 15:21:11","locations":[{"id":"cilfMU","name":"Main Brewery","streetAddress":"Thornegaten 39","extendedAddress":"3015","locality":"Drammen","phone":"+47 31 41 41 40","website":"http:\/\/www.haandbryggeriet.net\/","latitude":59.7436143,"longitude":10.2152787,"isPrimary":"Y","inPlanning":"N","isClosed":"N","openToPublic":"Y","locationType":"micro","locationTypeDisplay":"Micro Brewery","countryIsoCode":"NO","status":"verified","statusDisplay":"Verified","createDate":"2012-01-03 02:41:56","updateDate":"2014-07-23 19:11:34","country":{"isoCode":"NO","name":"NORWAY","displayName":"Norway","isoThree":"NOR","numberCode":578,"createDate":"2012-01-03 02:41:33"}}]}]}],"status":"success"}
+{
+    "currentPage": 1,
+    "numberOfPages": 1,
+    "totalResults": 1,
+    "data": [
+        {
+            "id": "nAAGBI",
+            "name": "Bestefar",
+            "nameDisplay": "Bestefar",
+            "description": "Belgian strong ale with the good old taste from when all the farms used to brew their own beer. A dark strong ale, well balanced and full of malty and fruity flavours. We make living beer, not pasteurised nor filtered.",
+            "availableId": 4,
+            "styleId": 64,
+            "isOrganic": "N",
+            "labels": {
+                "icon": "https:\/\/s3.amazonaws.com\/brewerydbapi\/beer\/nAAGBI\/upload_pj3KvX-icon.png",
+                "medium": "https:\/\/s3.amazonaws.com\/brewerydbapi\/beer\/nAAGBI\/upload_pj3KvX-medium.png",
+                "large": "https:\/\/s3.amazonaws.com\/brewerydbapi\/beer\/nAAGBI\/upload_pj3KvX-large.png"
+            },
+            "status": "verified",
+            "statusDisplay": "Verified",
+            "createDate": "2013-05-17 21:51:38",
+            "updateDate": "2015-12-17 04:04:20",
+            "available": {
+                "id": 4,
+                "name": "Seasonal",
+                "description": "Available at the same time of year, every year."
+            },
+            "style": {
+                "id": 64,
+                "categoryId": 5,
+                "category": {
+                    "id": 5,
+                    "name": "Belgian And French Origin Ales",
+                    "createDate": "2012-03-21 20:06:46"
+                },
+                "name": "Belgian-Style Dark Strong Ale",
+                "shortName": "Belgian Dark Strong",
+                "description": "Belgian dark strong ales are amber to dark brown in color. Often, though not always, brewed with dark Belgian \"candy\" sugar, these beers can be well attenuated, ranging from medium to full-bodied. The perception of hop bitterness is low to medium, with hop flavor and aroma also in this range. Fruity complexity along with the soft flavors of roasted malts add distinct character. The alcohol strength of these beers can often be deceiving to the senses. The intensity of malt character can be rich, creamy, and sweet with intensities ranging from medium to high. Very little or no diacetyl is perceived. Herbs and spices are sometimes used to delicately flavor these strong ales. Low levels of phenolic spiciness from yeast byproducts may also be perceived. Chill haze is allowable at cold temperatures.",
+                "ibuMin": "20",
+                "ibuMax": "50",
+                "abvMin": "7",
+                "abvMax": "11",
+                "srmMin": "9",
+                "srmMax": "35",
+                "ogMin": "1.064",
+                "fgMin": "1.012",
+                "fgMax": "1.024",
+                "createDate": "2012-03-21 20:06:46",
+                "updateDate": "2015-04-07 15:32:23"
+            },
+            "breweries": [
+                {
+                    "id": "JiKMgI",
+                    "name": "HaandBryggeriet",
+                    "nameShortDisplay": "HaandBryggeriet",
+                    "website": "http:\/\/www.haandbryggeriet.net\/",
+                    "isOrganic": "N",
+                    "images": {
+                        "icon": "https:\/\/s3.amazonaws.com\/brewerydbapi\/brewery\/JiKMgI\/upload_7e3iiW-icon.png",
+                        "medium": "https:\/\/s3.amazonaws.com\/brewerydbapi\/brewery\/JiKMgI\/upload_7e3iiW-medium.png",
+                        "large": "https:\/\/s3.amazonaws.com\/brewerydbapi\/brewery\/JiKMgI\/upload_7e3iiW-large.png",
+                        "squareMedium": "https:\/\/s3.amazonaws.com\/brewerydbapi\/brewery\/JiKMgI\/upload_7e3iiW-squareMedium.png",
+                        "squareLarge": "https:\/\/s3.amazonaws.com\/brewerydbapi\/brewery\/JiKMgI\/upload_7e3iiW-squareLarge.png"
+                    },
+                    "status": "verified",
+                    "statusDisplay": "Verified",
+                    "createDate": "2012-01-03 02:41:56",
+                    "updateDate": "2015-12-22 15:21:11",
+                    "locations": [
+                        {
+                            "id": "cilfMU",
+                            "name": "Main Brewery",
+                            "streetAddress": "Thornegaten 39",
+                            "extendedAddress": "3015",
+                            "locality": "Drammen",
+                            "phone": "+47 31 41 41 40",
+                            "website": "http:\/\/www.haandbryggeriet.net\/",
+                            "latitude": 59.7436143,
+                            "longitude": 10.2152787,
+                            "isPrimary": "Y",
+                            "inPlanning": "N",
+                            "isClosed": "N",
+                            "openToPublic": "Y",
+                            "locationType": "micro",
+                            "locationTypeDisplay": "Micro Brewery",
+                            "countryIsoCode": "NO",
+                            "status": "verified",
+                            "statusDisplay": "Verified",
+                            "createDate": "2012-01-03 02:41:56",
+                            "updateDate": "2014-07-23 19:11:34",
+                            "country": {
+                                "isoCode": "NO",
+                                "name": "NORWAY",
+                                "displayName": "Norway",
+                                "isoThree": "NOR",
+                                "numberCode": 578,
+                                "createDate": "2012-01-03 02:41:33"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "status": "success"
+}

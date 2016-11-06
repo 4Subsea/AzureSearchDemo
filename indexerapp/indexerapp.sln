@@ -7,6 +7,12 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "datasource", "datasource\Da
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IndexerApp", "indexerapp\IndexerApp.csproj", "{55350162-A90E-409D-8DE8-BB953729AA8D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{30DAF155-7812-48CB-A2E3-6168760D883A}"
+	ProjectSection(SolutionItems) = preProject
+		data\beers.json = data\beers.json
+		data\styles.json = data\styles.json
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
