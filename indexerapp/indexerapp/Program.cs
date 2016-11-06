@@ -17,33 +17,33 @@ namespace IndexerApp
 
             var beerIndex = BeerIndex.Schema;
 
-            ReCreateIndexes(beerIndex);
+            CreateIndexes(true, beerIndex);
 
             // Get data from brewerydb.com
             // For each beer style, page-load all beers and stuff'em into the index
 
-            var beers = from style in Styles.Load(Config.BeerDbApiKey)
-                        from beer in LoadBeers(style)
-                        select beer;
+            var styles = Styles.Load(Config.BeerDbApiKey).Skip(4).Take(2);
+            var beers = styles.SelectMany(LoadBeers).ToList();
 
-            var search = new AzureSearch();
-            search.Index(beerIndex.Name, beers.Take(5));
+            IndexBeers(beerIndex, beers);
 
             Console.WriteLine("Done");
             Console.ReadLine();
         }
 
-        private static void ReCreateIndexes(params IndexSchema[] indexSchemas)
+        private static void CreateIndexes(bool forceRecreate, params IndexSchema[] indexSchemas)
         {
             var search = new AzureSearch();
-            
+
             foreach (var index in indexSchemas)
             {
-                if (search.IndexExist(index.Name))
+                if (forceRecreate || search.IsIndexOutdated(index.Name))
+                {
                     search.DeleteIndex(index.Name);
 
-                Console.WriteLine($"Creating index '{index.Name.FullName}'");
-                search.CreateIndex(index.Name, index.Fields, index.ScoringProfiles);
+                    Console.WriteLine($"Creating index '{index.Name.FullName}'");
+                    search.CreateIndex(index.Name, index.Fields, index.ScoringProfiles);
+                }
             }
         }
 
@@ -66,6 +66,14 @@ namespace IndexerApp
 
                 page++;
             }
+        }
+
+        private static void IndexBeers(IndexSchema beerIndex, IEnumerable<Beer> beers)
+        {
+            Console.WriteLine($"Indexing into {beerIndex.Name.Name} ...");
+
+            var search = new AzureSearch();
+            search.Index(beerIndex.Name, beers);
         }
     }
 }

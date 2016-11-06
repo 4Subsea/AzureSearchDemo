@@ -8,6 +8,7 @@
             "name": "Bestefar",
             "nameDisplay": "Bestefar",
             "description": "Belgian strong ale with the good old taste from when all the farms used to brew their own beer. A dark strong ale, well balanced and full of malty and fruity flavours. We make living beer, not pasteurised nor filtered.",
+            "abv": "9.1",
             "availableId": 4,
             "styleId": 64,
             "isOrganic": "N",
