@@ -9,6 +9,7 @@ export class Simple {
         this.queryText = '';
         this.rawResult = '';
         this.count = null;
+        this.rawJson = '';
     }
 
     search() {
@@ -17,7 +18,7 @@ export class Simple {
             .then(x => {
                 this.count = x.count;
                 this.results = x.results;
-                this.rawResult = x.raw;
+                this.rawResult = JSON.stringify(x.raw, null, 4);
             });
 
     }
