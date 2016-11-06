@@ -17,7 +17,7 @@ export class Simple {
             .then(x => {
                 this.count = x.count;
                 this.results = x.results;
-                this.rawResult = x.rawResult;
+                this.rawResult = x.raw;
             });
 
     }
@@ -30,17 +30,16 @@ export class Simple {
     }
 
     attached() {
-        let _api = this.api;
+        let _class = this;
         $(".search-input").autocomplete({
             source: function(request, response) {
-                _api
+                _class.api
                     .suggest(request.term)
                     .then(results => response(results));
-
             },
             minLength: 2,
             select: function(event, ui) {
-                console.log("Selected: " + ui.item.value + " aka " + ui.item.id);
+                _class.queryText = ui.item.value;
             }
         })
     }
