@@ -7,16 +7,26 @@ export class Simple {
         this.api = api;
         this.results = [];
         this.queryText = '';
+        this.rawResult = '';
+        this.count = null;
     }
 
     search() {
         this.api
             .search(this.queryText)
-            .then(results => this.results = results);
+            .then(x => {
+                this.count = x.count;
+                this.results = x.results;
+                this.rawResult = x.rawResult;
+            });
+
     }
 
     clear() {
         this.results = [];
+        this.queryText = '';
+        this.rawResult = '';
+        this.count = null;
     }
 
     attached() {

@@ -20,7 +20,7 @@ export class SearchApi {
                 .then(result => {
                     let rawResult = result.response;
                     let jsonResult = JSON.parse(rawResult);
-                    let mappedResult = {
+                    resolve({
                         count: jsonResult["@odata.count"],
                         results: jsonResult["value"].map(x => {
                             return {
@@ -30,9 +30,7 @@ export class SearchApi {
                             }
                         }),
                         raw: rawResult
-                    };
-                    console.log(mappedResult);
-                    resolve(mappedResult);
+                    });
                 });
         });
     }
