@@ -38,10 +38,17 @@
 				</div>
 			</div>
 			<div repeat.for="result of results" class="card col-md-12 result">
-				<div class="card-block">
-					<h4 class="card-title">${result.name}</h4>
-					<p class="card-text">${result.style}</p>
-					<p class="card-text">${result.brewery}</p>
+				<div>
+					<div class="media">
+						<div class="media-left">
+							<img class="media-object rounded" src="http://placehold.it/100x100"/>
+						</div>
+						<div class="media-body">
+							<h4 class="card-title">${result.name}</h4>
+							<p class="card-text">${result.style}</p>
+							<p class="card-text">${result.brewery}</p>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
