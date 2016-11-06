@@ -21,16 +21,27 @@
 					<input type="submit" value="Search Search" class="btn btn-primary search-button">
 					<input type="button" click.delegate="clear()" value="I'm Feeling Tired" class="btn btn-primary search-button">
 				</div>
-
 			</form>
 		</div>
-		<div class="row">
-			<div repeat.for="result of results" class="card col-md-4 result">
-				<img class="card-img-top brand-img" src="https://unsplash.it/300/200?image=876" alt="Card image cap">
+			
+		<div class="row" if.bind="rawResult">
+			<p>
+				Found <span class="tag tag-info">${count}</span>, displaying <span class="tag tag-info">${results.length}</span>. 
+				<a class="text-muted raw-result-trigger" data-toggle="collapse" href="#rawResult" aria-expanded="false" aria-controls="collapseExample">
+					Raw result			
+				</a>
+
+			</p>
+			<div class="collapse" id="rawResult">
+				<div class="card card-block raw-result">
+					<pre>${rawResult}</pre>	
+				</div>
+			</div>
+			<div repeat.for="result of results" class="card col-md-12 result">
 				<div class="card-block">
 					<h4 class="card-title">${result.name}</h4>
+					<p class="card-text">${result.style}</p>
 					<p class="card-text">${result.brewery}</p>
-					<p class="card-text">${result.type}</p>
 				</div>
 			</div>
 		</div>

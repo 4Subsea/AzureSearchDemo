@@ -73,3 +73,12 @@
 .result {
     padding: 0;
 }
+
+.raw-result {
+    background-color: whitesmoke;
+    font-size: 0.8em;
+}
+
+.raw-result-trigger {
+    font-size: 0.8em;
+}
