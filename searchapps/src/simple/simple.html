@@ -26,10 +26,11 @@
 			
 		<div class="row" if.bind="rawResult">
 			<p>
-				Found ${count}, displaying ${results.length}. 
-				<a class="tag tag-info" data-toggle="collapse" href="#rawResult" aria-expanded="false" aria-controls="collapseExample">
-					Display raw result
+				Found <span class="tag tag-info">${count}</span>, displaying <span class="tag tag-info">${results.length}</span>. 
+				<a class="text-muted raw-result-trigger" data-toggle="collapse" href="#rawResult" aria-expanded="false" aria-controls="collapseExample">
+					Raw result			
 				</a>
+
 			</p>
 			<div class="collapse" id="rawResult">
 				<div class="card card-block raw-result">
