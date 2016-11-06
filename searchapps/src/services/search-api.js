@@ -18,8 +18,7 @@ export class SearchApi {
                     "search": query
                 })
                 .then(result => {
-                    let rawResult = result.response;
-                    let jsonResult = JSON.parse(rawResult);
+                    let jsonResult = JSON.parse(result.response);
                     resolve({
                         count: jsonResult["@odata.count"],
                         results: jsonResult["value"].map(x => {
@@ -29,7 +28,7 @@ export class SearchApi {
                                 brewery: x.breweries[0]
                             }
                         }),
-                        raw: rawResult
+                        raw: jsonResult
                     });
                 });
         });

@@ -70,6 +70,20 @@
     width: 100%;
 }
 
+.result.card {
+    border: none;
+    background-color: whitesmoke;
+}
+
 .result {
-    padding: 0;
+    padding: 0.4rem;
+}
+
+.raw-result {
+    background-color: whitesmoke;
+    font-size: 0.8em;
+}
+
+.raw-result-trigger {
+    font-size: 0.8em;
 }

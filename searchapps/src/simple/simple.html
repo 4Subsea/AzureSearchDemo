@@ -23,15 +23,32 @@
 				</div>
 			</form>
 		</div>
-		<div class="row" if.bind="count">
+			
+		<div class="row" if.bind="rawResult">
 			<p>
-				Found ${count}, displaying ${results.length}
+				Found <span class="tag tag-info">${count}</span>, displaying <span class="tag tag-info">${results.length}</span>. 
+				<a class="text-muted raw-result-trigger" data-toggle="collapse" href="#rawResult" aria-expanded="false" aria-controls="collapseExample">
+					Raw result			
+				</a>
+
 			</p>
+			<div class="collapse" id="rawResult">
+				<div class="card card-block raw-result">
+					<pre>${rawResult}</pre>	
+				</div>
+			</div>
 			<div repeat.for="result of results" class="card col-md-12 result">
-				<div class="card-block">
-					<h4 class="card-title">${result.name}</h4>
-					<p class="card-text">${result.style}</p>
-					<p class="card-text">${result.brewery}</p>
+				<div>
+					<div class="media">
+						<div class="media-left">
+							<img class="media-object rounded" src="http://placehold.it/100x100"/>
+						</div>
+						<div class="media-body">
+							<h4 class="card-title">${result.name}</h4>
+							<p class="card-text">${result.style}</p>
+							<p class="card-text">${result.brewery}</p>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>

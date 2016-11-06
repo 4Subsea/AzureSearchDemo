@@ -9,6 +9,7 @@ export class Simple {
         this.queryText = '';
         this.rawResult = '';
         this.count = null;
+        this.rawJson = '';
     }
 
     search() {
@@ -17,7 +18,7 @@ export class Simple {
             .then(x => {
                 this.count = x.count;
                 this.results = x.results;
-                this.rawResult = x.rawResult;
+                this.rawResult = JSON.stringify(x.raw, null, 4);
             });
 
     }
@@ -30,17 +31,16 @@ export class Simple {
     }
 
     attached() {
-        let _api = this.api;
+        let _class = this;
         $(".search-input").autocomplete({
             source: function(request, response) {
-                _api
+                _class.api
                     .suggest(request.term)
                     .then(results => response(results));
-
             },
             minLength: 2,
             select: function(event, ui) {
-                console.log("Selected: " + ui.item.value + " aka " + ui.item.id);
+                _class.queryText = ui.item.value;
             }
         })
     }
