@@ -66,15 +66,15 @@ namespace IndexerApp.Dsl
         /// </summary>
         public static void CreateIndex(this AzureSearch search, IndexName index, params Field[] fields)
         {
-            search.CreateIndex(index.FullName, fields, Enumerable.Empty<ScoringProfile>());
+            search.CreateIndex(index.FullName, fields, Enumerable.Empty<ScoringProfile>(), Enumerable.Empty<Suggester>());
         }
 
         /// <summary>
         /// Create an index with the given fields.
         /// </summary>
-        public static void CreateIndex(this AzureSearch search, IndexName index, IEnumerable<Field> fields, IEnumerable<ScoringProfile> scoringProfiles)
+        public static void CreateIndex(this AzureSearch search, IndexName index, IEnumerable<Field> fields, IEnumerable<ScoringProfile> scoringProfiles, IEnumerable<Suggester> suggesters)
         {
-            search.CreateIndex(index.FullName, fields, scoringProfiles);
+            search.CreateIndex(index.FullName, fields, scoringProfiles, suggesters);
         }
 
         /// <summary>

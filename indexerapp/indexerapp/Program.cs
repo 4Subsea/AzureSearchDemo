@@ -22,8 +22,8 @@ namespace IndexerApp
             // Get data from brewerydb.com
             // For each beer style, page-load all beers and stuff'em into the index
 
-            var styles = Styles.Load(Config.BeerDbApiKey).Skip(4).Take(2);
-            var beers = styles.SelectMany(LoadBeers).ToList();
+            var styles = Styles.Load(Config.BeerDbApiKey).Take(1);
+            var beers = styles.SelectMany(LoadBeers).Take(20).ToList();
 
             IndexBeers(beerIndex, beers);
 
@@ -42,7 +42,7 @@ namespace IndexerApp
                     search.DeleteIndex(index.Name);
 
                     Console.WriteLine($"Creating index '{index.Name.FullName}'");
-                    search.CreateIndex(index.Name, index.Fields, index.ScoringProfiles);
+                    search.CreateIndex(index.Name, index.Fields, index.ScoringProfiles, index.Suggesters);
                 }
             }
         }
