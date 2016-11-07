@@ -10,20 +10,21 @@ namespace IndexerApp
     {
         private const string DefaultScoringProfileName = "default";
 
-        private static IndexName Name => new IndexName(2, "Beers", DefaultScoringProfileName);
+        private static IndexName Name => new IndexName(1, "Beers", DefaultScoringProfileName);
 
         public static IndexSchema Schema => 
             new IndexSchemaBuilder<Beer>(Name)
                 .Key(d => d.id)
-                .Text(d => d.name, language: TextLanguage.English)
+                .Text(d => d.name, sortable:true, language: TextLanguage.English)
                 .Text(d => d.description, language: TextLanguage.English)
-                .Decimal(d => d.abv, facetable: true)
-                .Boolean(d => d.isorganic, facetable: true)
-                .DateTime(d => d.created, facetable: true)
-                .DateTime(d => d.updated, facetable: true)
-                .Text(d => d.stylename, filterable: true, facetable: true, language: TextLanguage.English)
+                .Decimal(d => d.abv, sortable: true, facetable: true)
+                .Boolean(d => d.isorganic, sortable: true, facetable: true)
+                .DateTime(d => d.created, sortable: true, facetable: true)
+                .DateTime(d => d.updated, sortable: true, facetable: true)
+                .Text(d => d.stylename, sortable: true, filterable: true, facetable: true, language: TextLanguage.English)
                 .Text(d => d.styledescription, language: TextLanguage.English)
                 .List(d => d.breweries, filterable: true, facetable: true)
+                .Location(d => d.brewerylocation, sortable: true, filterable: true)
                 .StoredOnly(d => d.labelicon)
                 .StoredOnly(d => d.labelmediumimage)
                 .StoredOnly(d => d.labellargeimage)

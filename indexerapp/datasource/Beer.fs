@@ -4,6 +4,7 @@ open System
 open System.Text
 open FSharp.Data
 open DataSource.Styles
+open Microsoft.Spatial
 
 [<AutoOpen>]
 type Location(lat: float, long: float) =
@@ -11,7 +12,7 @@ type Location(lat: float, long: float) =
     member this.long = long
 
 [<AutoOpen>]
-type Beer(id:string, name: string, description: string, abv:Nullable<decimal>, breweries: seq<string>, styleName: string, styleDescription: string, isOrganic: bool, labelIcon: string, labelMediumImage: string, labelLargeImage: string, created: DateTimeOffset, updated: DateTimeOffset) =
+type Beer(id:string, name: string, description: string, abv:Nullable<decimal>, breweries: seq<string>, styleName: string, styleDescription: string, isOrganic: bool, breweryLocation: GeographyPoint, labelIcon: string, labelMediumImage: string, labelLargeImage: string, created: DateTimeOffset, updated: DateTimeOffset) =
     member this.id = id
     member this.name = name
     member this.description = description
@@ -23,6 +24,7 @@ type Beer(id:string, name: string, description: string, abv:Nullable<decimal>, b
     member this.stylename = styleName
     member this.styledescription = styleDescription
     member this.isorganic = isOrganic
+    member this.brewerylocation = breweryLocation
     member this.created = created
     member this.updated = updated
 
@@ -46,6 +48,16 @@ type Beers =
                 for b in beer.Data do
                 let id = b.Id
                 let name = b.Name
+                let breweryGeographyPoint = b.Breweries |> 
+                                            Seq.collect(fun x -> x.Locations) |> 
+                                            Seq.filter(fun x -> match x.JsonValue.TryGetProperty("latitude") with
+                                                                | Some x -> true
+                                                                | None -> false) |> 
+                                            Seq.map(fun x -> GeographyPoint.Create((float)x.Latitude, (float)x.Longitude)) |> 
+                                            Seq.tryFind(fun _ -> true)
+                let breweryLocation = match breweryGeographyPoint with
+                                      | Some x -> x
+                                      | None -> null
                 let breweries = query {
                     for bb in b.Breweries do
                     select bb.Name
@@ -62,6 +74,6 @@ type Beers =
                 let large = if haveLabels then b.Labels.Large else null
                 let created =  new DateTimeOffset(b.CreateDate)
                 let updated = new DateTimeOffset(b.UpdateDate)
-                select (Beer(b.Id, b.Name, b.Description, abv, breweries, b.Style.Name, b.Style.Description, isOrganic, icon, medium, large, created, updated))
+                select (Beer(b.Id, b.Name, b.Description, abv, breweries, b.Style.Name, b.Style.Description, isOrganic, breweryLocation, icon, medium, large, created, updated))
             }
         BeerPage(beer.CurrentPage, beer.NumberOfPages, beers)

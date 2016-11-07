@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Microsoft.Azure.Search.Models;
+using Microsoft.Spatial;
 
 namespace IndexerApp.Dsl
 {
@@ -145,9 +146,9 @@ namespace IndexerApp.Dsl
             return this;
         }
 
-        public IndexSchemaBuilder<TDocument> Text<TProperty>(Expression<Func<TDocument, TProperty>> propertyName, bool searchable = true, bool filterable = false, TextLanguage? language = null, bool facetable = false)
+        public IndexSchemaBuilder<TDocument> Text<TProperty>(Expression<Func<TDocument, TProperty>> propertyName, bool searchable = true, bool filterable = false, TextLanguage? language = null, bool facetable = false, bool sortable = false)
         {
-            Add(Field(propertyName, DataType.String, searchable, filterable, facetable, language));
+            Add(Field(propertyName, DataType.String, searchable, filterable, facetable, sortable, language));
             return this;
         }
 
@@ -160,27 +161,27 @@ namespace IndexerApp.Dsl
             return this;
         }
 
-        public IndexSchemaBuilder<TDocument> Integer<TProperty>(Expression<Func<TDocument, TProperty>> propertyName, bool filterable = true, bool facetable = false)
+        public IndexSchemaBuilder<TDocument> Integer<TProperty>(Expression<Func<TDocument, TProperty>> propertyName, bool filterable = true, bool facetable = false, bool sortable = false)
         {
-            Add(Field(propertyName, DataType.Int32, false, filterable, facetable));
+            Add(Field(propertyName, DataType.Int32, false, filterable, facetable, sortable));
             return this;
         }
 
-        public IndexSchemaBuilder<TDocument> Decimal<TProperty>(Expression<Func<TDocument, TProperty>> propertyName, bool filterable = true, bool facetable = false)
+        public IndexSchemaBuilder<TDocument> Decimal<TProperty>(Expression<Func<TDocument, TProperty>> propertyName, bool filterable = true, bool facetable = false, bool sortable = false)
         {
-            Add(Field(propertyName, DataType.Double, false, filterable, facetable));
+            Add(Field(propertyName, DataType.Double, false, filterable, facetable, sortable));
             return this;
         }
 
-        public IndexSchemaBuilder<TDocument> Boolean<TProperty>(Expression<Func<TDocument, TProperty>> propertyName, bool filterable = true, bool facetable = false)
+        public IndexSchemaBuilder<TDocument> Boolean<TProperty>(Expression<Func<TDocument, TProperty>> propertyName, bool filterable = true, bool facetable = false, bool sortable = false)
         {
-            Add(Field(propertyName, DataType.Boolean, false, filterable, facetable));
+            Add(Field(propertyName, DataType.Boolean, false, filterable, facetable, sortable));
             return this;
         }
 
-        public IndexSchemaBuilder<TDocument> DateTime<TProperty>(Expression<Func<TDocument, TProperty>> propertyName, bool filterable = true, bool facetable = false)
+        public IndexSchemaBuilder<TDocument> DateTime(Expression<Func<TDocument, DateTimeOffset>> propertyName, bool filterable = true, bool facetable = false, bool sortable = false)
         {
-            Add(Field(propertyName, DataType.DateTimeOffset, false, filterable, facetable));
+            Add(Field(propertyName, DataType.DateTimeOffset, false, filterable, facetable, sortable));
             return this;
         }
 
@@ -190,13 +191,20 @@ namespace IndexerApp.Dsl
             return this;
         }
 
-        private Field Field<TProperty>(Expression<Func<TDocument, TProperty>> propertyName, DataType dataType = null, bool searchable = true, bool filterable = false, bool facetable = false, TextLanguage? language = null)
+        public IndexSchemaBuilder<TDocument> Location<TProperty>(Expression<Func<TDocument, TProperty>> propertyName, bool filterable = false, bool sortable = false)
+        {
+            Add(Field(propertyName, DataType.GeographyPoint, false, filterable, false, sortable));
+            return this;
+        }
+
+        private Field Field<TProperty>(Expression<Func<TDocument, TProperty>> propertyName, DataType dataType = null, bool searchable = true, bool filterable = false, bool facetable = false, bool sortable = false, TextLanguage? language = null)
         {
             return new Field(NameOf(propertyName), dataType ?? DataType.String)
             {
                 IsSearchable = searchable,
                 IsFilterable = filterable,
                 IsFacetable = facetable,
+                IsSortable = sortable,
                 Analyzer = AsAnalyzer(language)
             };
         }
