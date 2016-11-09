@@ -24,7 +24,9 @@ export class SearchApi {
                         results: jsonResult["value"].map(x => {
                             return {
                                 name: x.name,
-                                style: x.style,
+                                description: x.description,
+                                label: x.labelmediumimage,
+                                style: x.stylename,
                                 brewery: x.breweries[0]
                             }
                         }),

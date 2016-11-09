@@ -20,7 +20,6 @@ export class Simple {
                 this.results = x.results;
                 this.rawResult = JSON.stringify(x.raw, null, 4);
             });
-
     }
 
     clear() {
