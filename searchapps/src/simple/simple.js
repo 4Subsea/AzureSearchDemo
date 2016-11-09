@@ -12,6 +12,10 @@ export class Simple {
         this.rawJson = '';
     }
 
+    get hasResults() {
+        return this.rawResult;
+    }
+
     search() {
         this.api
             .search(this.queryText)
