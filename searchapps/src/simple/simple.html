@@ -3,7 +3,7 @@
 
 	<div class="container">
 		<div class="search-container ${results.length > 0 ? 'has-results' : ''}">
-			<div class="text-xs-center search-title-container">
+			<div if.bind="!hasResults" class="text-xs-center search-title-container">
 				<h1 class="search-title">
 					<span class="g-blue">S</span>
 					<span class="g-red">e</span>
@@ -19,23 +19,16 @@
 				</div>
 				<div class="search-button-row">
 					<input type="submit" value="Search Search" class="btn btn-primary search-button">
-					<input type="button" click.delegate="clear()" value="I'm Feeling Tired" class="btn btn-primary search-button">
+					<input type="button" click.delegate="tired()" value="I'm Feeling Tired" class="btn btn-primary search-button">
 				</div>
 			</form>
 		</div>
 			
-		<div class="row" if.bind="rawResult">
+		<div class="row" if.bind="hasResults">
 			<p>
 				Found <span class="tag tag-info">${count}</span>, displaying <span class="tag tag-info">${results.length}</span>. 
-				<a class="text-muted raw-result-trigger" data-toggle="collapse" href="#rawResult" aria-expanded="false" aria-controls="collapseExample">
-					Raw result			
-				</a>
 			</p>
-			<div class="collapse" id="rawResult">
-				<div class="card card-block raw-result">
-					<pre>${rawResult}</pre>	
-				</div>
-			</div>
+			
 			<div class="card-columns">
 				<div repeat.for="result of results" class="card">
 					<img if.bind="result.label" class="card-img-top" width="100%" src="${result.label}" alt="Card image cap">
