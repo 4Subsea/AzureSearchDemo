@@ -1,21 +1,28 @@
 <template>
-    <div if.bind="request">
-        <a class="text-muted raw-result-trigger" data-toggle="collapse" href="#request" aria-expanded="false" aria-controls="collapseExample">
-            Latest HTTP Request			
-        </a>
-        <div class="collapse" id="request">
-            <div class="request">
-                <pre>${request}</pre>
+    <require from="./request-log.css"></require>
+
+    <div if.bind="hasValues" class="container-fluid json-output-area">
+        <div class="container text-xs-center json-output-trigger">
+                <a if.bind="request" class="btn" data-toggle="collapse" href="#request" aria-expanded="false" aria-controls="collapseExample">
+                    Request			
+                </a>
+                <a if.bind="response" class="btn" data-toggle="collapse" href="#response" aria-expanded="false" aria-controls="collapseExample">
+                    Response
+                </a>
+        </div>
+        
+        <div class="container">
+            <div class="collapse" id="request">
+                <div class="request json-output card">
+                    <pre>${request}</pre>
+                </div>
             </div>
         </div>
-    </div>
-    <div if.bind="response">
-        <a class="text-muted raw-result-trigger" data-toggle="collapse" href="#response" aria-expanded="false" aria-controls="collapseExample">
-            Latest HTTP response
-        </a>
-        <div class="collapse" id="reponse">
-            <div class="reponse">
-                <pre>${reponse}</pre>	
+        <div class="container">
+            <div class="collapse" id="response">
+                <div class="response json-output card">
+                    <pre>${response}</pre>
+                </div>	
             </div>
         </div>
     </div>

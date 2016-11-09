@@ -6,6 +6,6 @@ export class RequestSent {
 
 export class ResponseReceived {
     constructor(responseMessage) {
-        this.response = reponseMessage;
+        this.response = responseMessage;
     }
 }
