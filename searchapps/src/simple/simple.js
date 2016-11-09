@@ -22,11 +22,9 @@ export class Simple {
             });
     }
 
-    clear() {
-        this.results = [];
-        this.queryText = '';
-        this.rawResult = '';
-        this.count = null;
+    tired() {
+        this.queryText = "\"real kick\"";
+        this.search();
     }
 
     attached() {

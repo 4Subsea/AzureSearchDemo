@@ -8,6 +8,27 @@ export class SearchApi {
                 x.withBaseUrl("https://azuresearchfree.search.windows.net/indexes/beersv1/docs")
                 x.withParams({ "api-version": "2015-02-28" });
                 x.withHeader("api-key", "5655AB55C4E55DBE67C691F376482D8C");
+                x.withInterceptor({
+                    request(message) {
+                        console.log(message);
+                        return message;
+                    },
+
+                    requestError(error) {
+                        console.log(error);
+                        throw error;
+                    },
+
+                    response(message) {
+                        console.log(message);
+                        return message;
+                    },
+
+                    responseError(error) {
+                        console.log(error);
+                        throw error;
+                    }
+                })
             })
     }
 

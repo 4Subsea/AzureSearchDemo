@@ -1,0 +1,22 @@
+<template>
+    <div if.bind="request">
+        <a class="text-muted raw-result-trigger" data-toggle="collapse" href="#request" aria-expanded="false" aria-controls="collapseExample">
+            Latest HTTP Request			
+        </a>
+        <div class="collapse" id="request">
+            <div class="request">
+                <pre>${request}</pre>
+            </div>
+        </div>
+    </div>
+    <div if.bind="response">
+        <a class="text-muted raw-result-trigger" data-toggle="collapse" href="#response" aria-expanded="false" aria-controls="collapseExample">
+            Latest HTTP response
+        </a>
+        <div class="collapse" id="reponse">
+            <div class="reponse">
+                <pre>${reponse}</pre>	
+            </div>
+        </div>
+    </div>
+</template>
