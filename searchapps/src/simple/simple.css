@@ -87,3 +87,11 @@
 .raw-result-trigger {
     font-size: 0.8em;
 }
+
+.ui-menu .ui-menu-item-wrapper {
+    padding: 0;
+}
+
+.ui-menu .ui-menu-item-wrapper:hover {
+    color: #ED4D3C;
+}

@@ -1,54 +1,69 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using datasource;
+using DataSource.Beers;
+using DataSource.Styles;
+using IndexerApp.Dsl;
 
-namespace indexerapp
+namespace IndexerApp
 {
     class Program
     {
-        private static string _apiKey;
-
-        private static string StyleUriFor()
-        {
-            return $"http://api.brewerydb.com/v2/styles?key={_apiKey}";
-        }
-
-        private static string BeerUriFor(int page = 1, int styleId = 1)
-        {
-            return $"http://api.brewerydb.com/v2/beers?key={_apiKey}&p={page}&styleId={styleId}&withBreweries=Y";
-        }
 
         static void Main(string[] args)
         {
-            _apiKey = args[0];
+            Config.BeerDbApiKey = args[0];
+            Config.SearchApiKey = args[1];
 
-            var styles = Styles.Load(StyleUriFor());
-            foreach (var style in styles.Take(3))
-            {
-                Console.WriteLine($"Style: {style.Name}:\n\n");
-                var beers = LoadBeers(style.Id);
-                foreach (var name in beers.Take(5))
-                {
-                    Console.WriteLine($"Beer: {name.Name} - Breweries: {name.Breweries} - {name.Page}");
-                }
-            }
+            var beerIndex = BeerIndex.Schema;
 
+            ReCreateIndexes(beerIndex);
+
+            // Get data from brewerydb.com
+            // For each beer style, page-load all beers and stuff'em into the index
+
+            var beers = from style in Styles.Load(Config.BeerDbApiKey)
+                        from beer in LoadBeers(style)
+                        select beer;
+
+            var search = new AzureSearch();
+            search.Index(beerIndex.Name, beers.Take(5));
+
+            Console.WriteLine("Done");
             Console.ReadLine();
         }
 
-        private static IEnumerable<Beer> LoadBeers(int styleId)
+        private static void ReCreateIndexes(params IndexSchema[] indexSchemas)
+        {
+            var search = new AzureSearch();
+            
+            foreach (var index in indexSchemas)
+            {
+                if (search.IndexExist(index.Name))
+                    search.DeleteIndex(index.Name);
+
+                Console.WriteLine($"Creating index '{index.Name.FullName}'");
+                search.CreateIndex(index.Name, index.Fields, index.ScoringProfiles);
+            }
+        }
+
+        private static IEnumerable<Beer> LoadBeers(Style style)
         {
             var page = 1;
             var totalPages = 1;
             while (page <= totalPages)
             {
-                var beerPage = Beers.Load(BeerUriFor(page, styleId));
+                Console.WriteLine($"Loading '{style.Name}' beers, page {page}...");
+
+                var beerPage = Beers.Load(Config.BeerDbApiKey, style, page);
                 foreach (var beer in beerPage.Beers)
                 {
                     yield return beer;
                 }
                 totalPages = beerPage.TotalPages;
+
+                Console.WriteLine($"Loaded {style.Name} beers, page {page} of {totalPages}");
+
                 page++;
             }
         }
