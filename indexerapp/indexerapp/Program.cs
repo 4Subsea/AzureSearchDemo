@@ -17,15 +17,16 @@ namespace IndexerApp
 
             var beerIndex = BeerIndex.Schema;
 
-            CreateIndexes(true, beerIndex);
+            CreateIndexes(false, beerIndex);
 
             // Get data from brewerydb.com
-            // For each beer style, page-load all beers and stuff'em into the index
+            // For each beer style, load all beers and stuff'em into the index page by page
 
-            var styles = Styles.Load(Config.BeerDbApiKey).Take(1);
-            var beers = styles.SelectMany(LoadBeers).Take(20).ToList();
-
-            IndexBeers(beerIndex, beers);
+            var styles = Styles.Load(Config.BeerDbApiKey).Skip(24).Take(6);
+            foreach (var beers in styles.SelectMany(LoadBeers))
+            {
+                IndexBeers(beerIndex, beers);
+            }
 
             Console.WriteLine("Done");
             Console.ReadLine();
@@ -47,7 +48,7 @@ namespace IndexerApp
             }
         }
 
-        private static IEnumerable<Beer> LoadBeers(Style style)
+        private static IEnumerable<IEnumerable<Beer>> LoadBeers(Style style)
         {
             var page = 1;
             var totalPages = 1;
@@ -56,10 +57,7 @@ namespace IndexerApp
                 Console.WriteLine($"Loading '{style.Name}' beers, page {page}...");
 
                 var beerPage = Beers.Load(Config.BeerDbApiKey, style, page);
-                foreach (var beer in beerPage.Beers)
-                {
-                    yield return beer;
-                }
+                yield return beerPage.Beers;
                 totalPages = beerPage.TotalPages;
 
                 Console.WriteLine($"Loaded {style.Name} beers, page {page} of {totalPages}");
