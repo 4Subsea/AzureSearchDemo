@@ -15,8 +15,8 @@ export class SearchApi {
         return new Promise(resolve => {
             this.httpClient
                 .post("/search", {
-                    "count": true,
-                    "search": query
+                    count: true,
+                    search: query
                 })
                 .then(result => {
                     let jsonResult = JSON.parse(result.response);
@@ -39,7 +39,18 @@ export class SearchApi {
 
     suggest(query) {
         return new Promise(resolve => {
-            resolve(['nissefar', 'bestefar', 'oldefar'])
+            this.httpClient
+                .post("/suggest", {
+                    search: query,
+                    suggesterName: "suggestBeerName",
+                    highlightPreTag: "<b>",
+                    highlightPostTag: "</b>"
+                })
+                .then(result => {
+                    var results = JSON.parse(result.response).value;
+                    console.log(results);
+                    resolve(results.map(x => x["@search.text"]));
+                });
         })
     }
 }
