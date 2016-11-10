@@ -56,4 +56,9 @@ export class SearchApi {
                 });
         })
     }
+
+    faceted(query){
+        //facet=stylename&facet=abv,values:0|3|5|10|15&facet=breweries&facet=created,interval:quarter&search=*
+        return new Promise(resolve => resolve(["hei", "hei igjen"]));
+    }
 }
