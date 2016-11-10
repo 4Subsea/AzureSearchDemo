@@ -46,8 +46,8 @@ export class SearchApi {
                 .post("/suggest", {
                     search: query,
                     suggesterName: "suggestBeerName",
-                    highlightPreTag: "<b>",
-                    highlightPostTag: "</b>"
+                    highlightPreTag: "<strong>",
+                    highlightPostTag: "</strong>"
                 })
                 .then(result => {
                     var results = JSON.parse(result.response).value;
