@@ -99,6 +99,62 @@ define('common/messages',["exports"], function (exports) {
         this.response = responseMessage;
     };
 });
+define('common/multi-subscriber',["exports", "aurelia-binding"], function (exports, _aureliaBinding) {
+    "use strict";
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.MultiCollectionSubscriber = undefined;
+
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) {
+            throw new TypeError("Cannot call a class as a function");
+        }
+    }
+
+    var _class, _temp;
+
+    var MultiCollectionSubscriber = exports.MultiCollectionSubscriber = (_temp = _class = function () {
+        function MultiCollectionSubscriber(bindingEngine) {
+            _classCallCheck(this, MultiCollectionSubscriber);
+
+            this.bindingEngine = bindingEngine;
+            this.observers = [];
+            this.subscriptions = [];
+        }
+
+        MultiCollectionSubscriber.prototype.observe = function observe(collection) {
+            var _this = this;
+
+            collection.forEach(function (x) {
+                var observer = _this.bindingEngine.collectionObserver(x);
+                _this.observers.push(observer);
+            });
+
+            return this;
+        };
+
+        MultiCollectionSubscriber.prototype.onChanged = function onChanged(execute) {
+            var _this2 = this;
+
+            this.observers.forEach(function (x) {
+                return _this2.subscriptions.push(x.subscribe(function (change) {
+                    return execute(change);
+                }));
+            });
+        };
+
+        MultiCollectionSubscriber.prototype.dispose = function dispose() {
+            this.subscriptions.forEach(function (x) {
+                return x.dispose();
+            });
+            this.observers = [];
+        };
+
+        return MultiCollectionSubscriber;
+    }(), _class.inject = [_aureliaBinding.BindingEngine], _temp);
+});
 define('common/request-interceptor',["exports", "aurelia-event-aggregator", "./messages"], function (exports, _aureliaEventAggregator, _messages) {
     "use strict";
 
@@ -209,12 +265,13 @@ define('common/request-log',['exports', 'aurelia-event-aggregator', './messages'
         return RequestLog;
     }(), _class.inject = [_aureliaEventAggregator.EventAggregator], _temp);
 });
-define('facets/facets',["exports"], function (exports) {
+define('facets/facets',["exports", "services/search-api", "common/multi-subscriber"], function (exports, _searchApi, _multiSubscriber) {
     "use strict";
 
     Object.defineProperty(exports, "__esModule", {
         value: true
     });
+    exports.Facets = undefined;
 
     function _classCallCheck(instance, Constructor) {
         if (!(instance instanceof Constructor)) {
@@ -222,9 +279,61 @@ define('facets/facets',["exports"], function (exports) {
         }
     }
 
-    var Facets = exports.Facets = function Facets() {
-        _classCallCheck(this, Facets);
-    };
+    var _class, _temp;
+
+    var Facets = exports.Facets = (_temp = _class = function () {
+        function Facets(api, subscriber) {
+            var _this = this;
+
+            _classCallCheck(this, Facets);
+
+            this.api = api;
+            this.subscriber = subscriber;
+
+            this.query = "";
+            this.results = [];
+            this.count = null;
+            this.facets = null;
+
+            this.selectedBrewery = [];
+            this.selectedStyle = [];
+            this.selectedAbv = [];
+            this.selectedCreated = [];
+
+            this.subscriber.observe([this.selectedBrewery, this.selectedStyle, this.selectedAbv, this.selectedCreated]).onChanged(function (change) {
+                return _this.search();
+            });
+        }
+
+        Facets.prototype.search = function search() {
+            var _this2 = this;
+
+            var filter = this.buildFilter();
+
+            this.api.faceted(this.query, filter).then(function (result) {
+                _this2.count = result.count;
+                _this2.results = result.results;
+                _this2.facets = result.facets;
+            });
+        };
+
+        Facets.prototype.buildFilter = function buildFilter() {
+
+            var stylenameFilter = this.selectedStyle[0] === undefined ? "" : "stylename eq '" + this.selectedStyle[0] + "'";
+            console.log(stylenameFilter);
+            return stylenameFilter;
+        };
+
+        Facets.prototype.attached = function attached() {
+            this.search();
+        };
+
+        Facets.prototype.detached = function detached() {
+            this.subscriber.dispose();
+        };
+
+        return Facets;
+    }(), _class.inject = [_searchApi.SearchApi, _multiSubscriber.MultiCollectionSubscriber], _temp);
 });
 define('home/home',["exports"], function (exports) {
   "use strict";
@@ -299,8 +408,7 @@ define('services/search-api',["exports", "aurelia-http-client", "../common/reque
                                 style: x.stylename,
                                 brewery: x.breweries[0]
                             };
-                        }),
-                        raw: jsonResult
+                        })
                     });
                 });
             });
@@ -313,14 +421,53 @@ define('services/search-api',["exports", "aurelia-http-client", "../common/reque
                 _this2.httpClient.post("/suggest", {
                     search: query,
                     suggesterName: "suggestBeerName",
-                    highlightPreTag: "<b>",
-                    highlightPostTag: "</b>"
+                    highlightPreTag: "<strong>",
+                    highlightPostTag: "</strong>"
                 }).then(function (result) {
                     var results = JSON.parse(result.response).value;
-                    console.log(results);
                     resolve(results.map(function (x) {
                         return x["@search.text"];
                     }));
+                });
+            });
+        };
+
+        SearchApi.prototype.faceted = function faceted(query, filter) {
+            var _this3 = this;
+
+            return new Promise(function (resolve) {
+                _this3.httpClient.post("/search", {
+                    facets: ["stylename", "abv,values:5|10|15", "breweries", "created,interval:year"],
+                    search: query,
+                    filter: filter
+                }).then(function (result) {
+                    var jsonResponse = JSON.parse(result.response);
+                    var facets = jsonResponse["@search.facets"];
+                    var mapped = {
+                        facets: {
+                            stylename: facets.stylename,
+                            abv: facets.abv,
+                            breweries: facets.breweries,
+                            created: facets.created.map(function (x) {
+                                return {
+                                    value: new Date(x.value).getFullYear(),
+                                    count: x.count
+                                };
+                            })
+                        },
+                        results: jsonResponse.value.map(function (x) {
+                            return {
+                                name: x.name,
+                                description: x.description,
+                                alcoholPercentage: x.abv,
+                                label: x.labelmediumimage,
+                                style: x.stylename,
+                                brewery: x.breweries[0]
+                            };
+                        })
+                    };
+
+                    resolve(mapped);
                 });
             });
         };
@@ -418,14 +565,14 @@ define('simple/simple',['exports', 'services/search-api'], function (exports, _s
         return Simple;
     }(), _class.inject = [_searchApi.SearchApi], _temp);
 });
-define('text!app.html', ['module'], function(module) { module.exports = "<template>\n  <require from=\"common/request-log\"></require>\n  <require from=\"site.css\"></require>\n\n  <request-log></request-log>\n  <router-view></router-view>\n</template>"; });
 define('text!site.css', ['module'], function(module) { module.exports = ""; });
-define('text!common/request-log.html', ['module'], function(module) { module.exports = "<template>\n    <require from=\"./request-log.css\"></require>\n\n    <div if.bind=\"hasValues\" class=\"container-fluid json-output-area\">\n        <div class=\"container text-xs-center json-output-trigger\">\n                <a if.bind=\"request\" class=\"btn\" data-toggle=\"collapse\" href=\"#request\" aria-expanded=\"false\" aria-controls=\"collapseExample\">\n                    Request\t\t\t\n                </a>\n                <a if.bind=\"response\" class=\"btn\" data-toggle=\"collapse\" href=\"#response\" aria-expanded=\"false\" aria-controls=\"collapseExample\">\n                    Response\n                </a>\n        </div>\n        \n        <div class=\"container\">\n            <div class=\"collapse\" id=\"request\">\n                <div class=\"request json-output card\">\n                    <pre>${request}</pre>\n                </div>\n            </div>\n        </div>\n        <div class=\"container\">\n            <div class=\"collapse\" id=\"response\">\n                <div class=\"response json-output card\">\n                    <pre>${response}</pre>\n                </div>\t\n            </div>\n        </div>\n    </div>\n</template>"; });
-define('text!common/request-log.css', ['module'], function(module) { module.exports = ".json-output-area {\n    background-color: #0B2841;\n}\n\n.json-output-trigger {\n    padding: 10px;\n}\n\n.json-output-trigger a {\n    background-color: #E93F65;\n    padding: 5px;\n    color: #FFF;\n    font-size: 0.8em;\n    font-family: Montserrat;\n}\n\n.json-output {\n    padding: 10px;\n    background-color: #f5f5f5;\n    font-size: 0.8em;\n}"; });
+define('text!app.html', ['module'], function(module) { module.exports = "<template>\n  <require from=\"common/request-log\"></require>\n  <require from=\"site.css\"></require>\n\n  <request-log></request-log>\n  <router-view></router-view>\n</template>"; });
+define('text!common/request-log.html', ['module'], function(module) { module.exports = "<template>\n    <require from=\"./request-log.css\"></require>\n\n    <div if.bind=\"hasValues\" class=\"container-fluid json-output-area\">\n        <a class=\"mini-bar\" data-toggle=\"collapse\" href=\"#buttonPane\" aria-expanded=\"true\" aria-controls=\"collapseOne\"></a>\n        <div id=\"buttonPane\" class=\"container text-xs-center json-output-trigger collapse\">\n            <a if.bind=\"request\" class=\"btn\" data-toggle=\"collapse\" href=\"#request\" aria-expanded=\"false\" aria-controls=\"collapseExample\">\n                    Request\t\t\t\n                </a>\n            <a if.bind=\"response\" class=\"btn\" data-toggle=\"collapse\" href=\"#response\" aria-expanded=\"false\" aria-controls=\"collapseExample\">\n                    Response\n                </a>\n            <a data-toggle=\"collapse\" href=\"#buttonPane\" aria-expanded=\"true\" aria-controls=\"collapseOne\">\n                <i class=\"fa fa-times\" aria-hidden=\"true\"></i>\n            </a>\n        </div>\n        <div class=\"container\">\n            <div class=\"collapse\" id=\"request\">\n                <div class=\"request json-output card\">\n                    <pre>${request}</pre>\n                </div>\n            </div>\n        </div>\n        <div class=\"container\">\n            <div class=\"collapse\" id=\"response\">\n                <div class=\"response json-output card\">\n                    <pre>${response}</pre>\n                </div>\n            </div>\n        </div>\n    </div>\n</template>"; });
+define('text!common/request-log.css', ['module'], function(module) { module.exports = ".json-output-area {\n    background-color: #0B2841;\n}\n\n.mini-bar {\n    width: 100%;\n    height: 5px;\n    display: block;\n}\n\n.json-output-trigger {\n    padding: 10px;\n}\n\n.json-output-trigger a {\n    color: #E93F65;\n}\n.json-output-trigger .btn {\n    background-color: #E93F65;\n    padding: 5px;\n    color: #FFF;\n    font-size: 0.8em;\n    font-family: Montserrat;\n}\n\n.json-output {\n    padding: 10px;\n    background-color: #f5f5f5;\n    font-size: 0.8em;\n}"; });
+define('text!facets/facets.html', ['module'], function(module) { module.exports = "<template>\n    <require from=\"./facets.css\"></require>\n\n    <div class=\"main-container\">\n        <div class=\"container-fluid top-menu-bar\">\n            <div class=\"container\">\n                <div class=\"row\">\n                    <div class=\"left-menu col-xs-5\">\n                        <span>\n                            <span class=\"btn logo-text logo\">&nbsp</span>\n                        <span class=\"btn logo-text\">BEER</span>\n                        </span>\n                        <span class=\"slogan\">The Beer market</span>\n                    </div>\n                    <nav class=\"right-menu nav nav-inline col-xs-7 row\">\n                        <div class=\"col-xs-3\"><a class=\"nav-link\" href=\"#\"><i class=\"fa fa-lg fa-dot-circle-o\" aria-hidden=\"true\"></i> Me</a></div>\n                        <div class=\"col-xs-3\"><a class=\"nav-link\" href=\"#\"><i class=\"fa fa-lg fa-plus\" aria-hidden=\"true\"></i> Can</a></div>\n                        <div class=\"col-xs-3\"><a class=\"nav-link\" href=\"#\"><i class=\"fa fa-lg fa-bell\" aria-hidden=\"true\"></i> Haz</a></div>\n                        <div class=\"col-xs-3\"><a class=\"nav-link\" href=\"#\"><i class=\"fa fa-lg fa-user-circle\" aria-hidden=\"true\"></i> Beer</a></div>\n                    </nav>\n                </div>\n            </div>\n        </div>\n        <div class=\"container search-area\">\n            <div class=\"row\">\n                <div class=\"facet-pane col-sm-4 card\">\n                    <div class=\"sub-container\">\n                        <form submit.delegate=\"search()\">\n                            <input class=\"form-control search-input\" type=\"text\" value.bind=\"query\" placeholder=\"Search\" id=\"example-text-input\">\n                        </form>\n                        <div>\n                            <div class=\"facet-group-title\"><strong>Brewery</strong></div>\n                            <div repeat.for=\"facet of facets.breweries\" class=\"form-check\">\n                                <label class=\"form-check-label\">\n                                <input class=\"form-check-input\" type=\"checkbox\" model.bind=\"facet.value\" checked.bind=\"selectedBrewery\">\n                                    ${facet.value} (${facet.count})\n                                </label>\n                            </div>\n\n                            <ul>\n                                <li repeat.for=\"item of selectedBrewery\">${item}</li>\n                            </ul>\n\n                            <div class=\"facet-group-title\"><strong>Style</strong></div>\n                            <div repeat.for=\"facet of facets.stylename\" class=\"form-check\">\n                                <label class=\"form-check-label\">\n                                <input class=\"form-check-input\" type=\"checkbox\" model.bind=\"facet.value\" checked.bind=\"selectedStyle\">\n                                    ${facet.value} (${facet.count})\n                                </label>\n                            </div>\n\n                            <ul>\n                                <li repeat.for=\"item of selectedStyle\">${item}</li>\n                            </ul>\n\n                            <div class=\"facet-group-title\"><strong>Alcohol by Volume</strong></div>\n                            <div repeat.for=\"facet of facets.abv\" class=\"form-check\">\n                                <label class=\"form-check-label\">\n                                <input class=\"form-check-input\" type=\"checkbox\" model.bind=\"facet\" checked.bind=\"selectedAbv\">\n                                    <span if.bind=\"facet.from\">${facet.from}%</span>\n                                     - <span if.bind=\"facet.to\">${facet.to}%</span> (${facet.count})\n                                </label>\n                            </div>\n\n                            <ul>\n                                <li repeat.for=\"item of selectedAbv\">${item.from} - ${item.to}</li>\n                            </ul>\n\n                            <div class=\"facet-group-title\"><strong>Created</strong></div>\n                            <div repeat.for=\"facet of facets.created\" class=\"form-check\">\n                                <label class=\"form-check-label\">\n                                <input class=\"form-check-input\" type=\"checkbox\" model.bind=\"facet.value\" checked.bind=\"selectedCreated\">\n                                    ${facet.value} (${facet.count})\n                                </label>\n                            </div>\n\n                            <ul>\n                                <li repeat.for=\"item of selectedCreated\">${item}</li>\n                            </ul>\n\n                        </div>\n                    </div>\n                </div>\n\n                <div class=\"main-pane col-sm-8\">\n                    <div class=\"search-result card\">\n                        <div class=\"list-group list-group-flush\">\n                            <div repeat.for=\"result of results\" class=\"list-group-item\">\n                                <div class=\"media\">\n                                    <a class=\"media-left\" href=\"#\">\n                                        <img if.bind=\"result.label\" class=\"media-object media-left\" src=\"${result.label}\" alt=\"Beer label\">\n                                        <img if.bind=\"!result.label\" class=\"media-object media-left\" src=\"https://placehold.it/254x254\" alt=\"Placeholder image when label is missing\"\n                                        />\n                                    </a>\n                                    <div class=\"media-body\">\n                                        <h4 class=\"media-heading\">${result.name}</h4>\n                                        <div if.bind=\"result.description\">${result.description}</div>\n                                        <div if.bind=\"!result.description\" class=\"text-muted font-italic small\">Missing description</div>\n                                        <div class=\"row\">\n                                            <div class=\"text-muted col-sm-6 brewery-name\">${result.brewery}</div>\n                                            <div if.bind=\"result.alcoholPercentage\" class=\"display-4 col-sm-6\"><strong>${result.alcoholPercentage} %</strong></div>\n                                        </div>\n                                    </div>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n\n    </div>\n\n</template>"; });
+define('text!facets/facets.css', ['module'], function(module) { module.exports = ".main-container {\n    background-color: #F3FAFF;\n    font-family: Raleway;\n    min-height: 100vh;\n}\n\n.top-menu-bar {\n    background-color: #08C5FC;\n    line-height: 55px;\n    color: #FFF;\n}\n\n.top-menu-bar a {\n    color: #FFF;\n}\n\n.container {\n    max-width: 980px;\n}\n\n.right-menu {\n    background-color: #056EFC;\n    text-align: center;\n}\n\n.right-menu a {\n    \n}\n\n.logo-text {\n    font-size: 14px;\n    font-family: Montserrat;\n    letter-spacing: 2px;\n    font-weight: bold;\n    border: 2px solid;\n    padding-right: 0.5rem;\n    padding-left: 0.5rem;\n}\n\n.logo.logo-text {\n    background-color: #056EFC;\n    margin-right: -6px;\n}\n\n.slogan {\n    margin-left: 5px;\n    font-size: 0.8rem;\n}\n\n.card {\n    border-radius: 0;\n}\n\n.sub-container {\n    width: 90%;\n    margin: auto;\n}\n\n.search-area {\n    margin-top: 20px;\n}\n\n.search-input {\n    margin: 1rem auto;\n    font-size: 1em;\n}\n\n.facet-pane {\n    font-size: 0.8em;\n}\n\n.facet-group-title {\n    margin: 10px auto;\n}\n\n.brewery-name {\n    margin-top: 20px;\n}"; });
 define('text!home/home.html', ['module'], function(module) { module.exports = "<template>\n    <require from=\"./home.css\"></require>\n\n    \n\n    <h1>At Home</h1>\n</template>"; });
 define('text!home/home.css', ['module'], function(module) { module.exports = ""; });
-define('text!facets/facets.html', ['module'], function(module) { module.exports = "<template>\n    <require from=\"./facets.css\"></require>\n\n    <div class=\"main-container\">\n        <div class=\"container-fluid top-menu-bar\">\n            <div class=\"container\">\n                <div class=\"left-menu float-xs-left\">\n                    <span>\n                        <span class=\"btn logo-text logo\">&nbsp</span>\n                        <span class=\"btn logo-text\">BEER</span>\n                    </span>\n                    <span class=\"slogan\">The market of Beer</span>\n                </div>\n                <nav class=\"right-menu nav nav-inline float-xs-right\">\n                    <a class=\"nav-link active\" href=\"#\"><i class=\"fa fa-lg fa-dot-circle-o\" aria-hidden=\"true\"></i> Me</a>\n                    <a class=\"nav-link\" href=\"#\"><i class=\"fa fa-lg fa-plus\" aria-hidden=\"true\"></i> Can</a>\n                    <a class=\"nav-link\" href=\"#\"><i class=\"fa fa-lg fa-bell\" aria-hidden=\"true\"></i> Haz</a>\n                    <a class=\"nav-link\" href=\"#\"><i class=\"fa fa-lg fa-user-circle\" aria-hidden=\"true\"></i> Beer</a>\n                </nav>   \n            </div>\n        </div>\n        <div class=\"container search-area\">\n            <div class=\"row\">\n                <div class=\"facet-pane col-sm-4 card\">\n                    <div class=\"sub-container\">\n                        <input class=\"form-control search-input\" type=\"text\" value=\"\" placeholder=\"Search\" id=\"example-text-input\">\n                        <div>\n                            <div class=\"facet-group-title\"><strong>Style</strong></div>\n                            <div class=\"form-check\">\n                                <label class=\"form-check-label\">\n                                <input class=\"form-check-input\" type=\"checkbox\" value=\"\">\n                                    Indian Pale Ale\n                                </label>\n                                </div>\n                            <div class=\"form-check\">\n                                    <label class=\"form-check-label\">\n                                    <input class=\"form-check-input\" type=\"checkbox\" value=\"\">\n                                    Oatmeal Porter\n                                    </label>\n                            </div>\n                        </div>\n                        <div>\n                            <div class=\"facet-group-title\"><strong>Style</strong></div>\n                            <div class=\"form-check\">\n                                <label class=\"form-check-label\">\n                                <input class=\"form-check-input\" type=\"checkbox\" value=\"\">\n                                    Indian Pale Ale\n                                </label>\n                                </div>\n                            <div class=\"form-check\">\n                                    <label class=\"form-check-label\">\n                                    <input class=\"form-check-input\" type=\"checkbox\" value=\"\">\n                                    Oatmeal Porter\n                                    </label>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n\n                <div class=\"main-pane col-sm-8\">\n                    <div class=\"search-result card\">\n                        <ul class=\"list-group list-group-flush\">\n                            <li class=\"list-group-item\">Cras justo odio</li>\n                            <li class=\"list-group-item\">Dapibus ac facilisis in</li>\n                            <li class=\"list-group-item\">Vestibulum at eros</li>\n                        </ul>\n                    </div>\n                </div>\n            </div>\n        </div>\n        \n    </div>\n    \n</template>"; });
-define('text!facets/facets.css', ['module'], function(module) { module.exports = ".main-container {\n    background-color: #F3FAFF;\n    font-family: Raleway;\n    min-height: 100vh;\n}\n\n.top-menu-bar {\n    background-color: #08C5FC;\n    line-height: 55px;\n    color: #FFF;\n}\n\n.top-menu-bar a {\n    color: #FFF;\n}\n\n.container {\n    max-width: 980px;\n}\n\n.right-menu {\n    background-color: #056EFC;\n    width: 500px;\n    text-align: center;\n}\n\n.right-menu a {\n    padding: 0 20px;\n}\n\n.logo-text {\n    font-size: 14px;\n    font-family: Montserrat;\n    letter-spacing: 2px;\n    font-weight: bold;\n    border: 2px solid;\n    padding-right: 0.5rem;\n    padding-left: 0.5rem;\n}\n\n.logo.logo-text {\n    background-color: #056EFC;\n    margin-right: -6px;\n}\n\n.slogan {\n    margin-left: 5px;\n    font-size: 0.8rem;\n}\n\n.card {\n    border-radius: 0;\n}\n\n.sub-container {\n    width: 90%;\n    margin: auto;\n}\n\n.search-area {\n    margin-top: 20px;\n}\n\n.search-input {\n    margin: 1rem auto;\n    font-size: 1em;\n}\n\n.facet-pane {\n    font-size: 0.8em;\n}\n\n.facet-group-title {\n    margin: 10px auto;\n}"; });
 define('text!simple/simple.html', ['module'], function(module) { module.exports = "<template>\n\t<require from=\"./simple.css\"></require>\n\n\t<div class=\"container\">\n\t\t<div class=\"search-container ${results.length > 0 ? 'has-results' : ''}\">\n\t\t\t<div if.bind=\"!hasResults\" class=\"text-xs-center search-title-container\">\n\t\t\t\t<h1 class=\"search-title\">\n\t\t\t\t\t<span class=\"g-blue\">S</span>\n\t\t\t\t\t<span class=\"g-red\">e</span>\n\t\t\t\t\t<span class=\"g-yellow\">a</span>\n\t\t\t\t\t<span class=\"g-blue\">r</span>\n\t\t\t\t\t<span class=\"g-green\">c</span>\n\t\t\t\t\t<span class=\"g-red\">h</span>\n\t\t\t\t</h1>\n\t\t\t</div>\n\t\t\t<form submit.delegate=\"search()\">\n\t\t\t\t<div class=\"row\">\n\t\t\t\t\t<input type=\"text\" value.bind=\"queryText\" class=\"search-input col-md-6 col-xs-8 offset-xs-2 offset-md-3\">\n\t\t\t\t</div>\n\t\t\t\t<div class=\"search-button-row\">\n\t\t\t\t\t<input type=\"submit\" value=\"Search Search\" class=\"btn btn-primary search-button\">\n\t\t\t\t\t<input type=\"button\" click.delegate=\"tired()\" value=\"I'm Feeling Tired\" class=\"btn btn-primary search-button\">\n\t\t\t\t</div>\n\t\t\t</form>\n\t\t</div>\n\t\t\t\n\t\t<div class=\"row\" if.bind=\"hasResults\">\n\t\t\t<p>\n\t\t\t\tFound <span class=\"tag tag-info\">${count}</span>, displaying <span class=\"tag tag-info\">${results.length}</span>. \n\t\t\t</p>\n\t\t\t\n\t\t\t<div class=\"card-columns\">\n\t\t\t\t<div repeat.for=\"result of results\" class=\"card\">\n\t\t\t\t\t<img if.bind=\"result.label\" class=\"card-img-top\" width=\"100%\" src=\"${result.label}\" alt=\"Card image cap\">\n\t\t\t\t\t<div class=\"card-block\">\n\t\t\t\t\t\t<h4 class=\"card-title\">${result.name}</h4>\n\t\t\t\t\t\t<p class=\"card-text\"><small class=\"text-muted\">${result.brewery}</small></p>\n\t\t\t\t\t\t<p class=\"card-text\"><small class=\"text-muted\">${result.style}</small></p>\n\t\t\t\t\t\t<p class=\"card-text\">${result.description}</p>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n\n</template>"; });
 define('text!simple/simple.css', ['module'], function(module) { module.exports = ".search-container {\n    margin-top: 20vh;\n}\n\n.has-results {\n    margin-top: 10px !important;\n}\n\n.search-title {\n    font-family: 'Montserrat';\n    font-size: 5.5em;\n    margin: 20px;\n}\n\n.search-title-container::after {\n    content: \"Norway\";\n    font-size: 16px;\n    font-family: \"Roboto\";\n    color: #4285f4;\n    position: relative;\n    top: -40px;\n    right: -110px;\n}\n\n.search-title span {\n    margin: -14px;\n}\n\n.search-input {\n    height: 2.5em;\n}\n\n.search-button-row {\n    margin-top: 20px;\n    width: 400px;\n    margin: 30px auto;\n    text-align: center;\n}\n\n.search-button {\n    font-size: 12px;\n    margin: 0 2px;\n}\n\n.g-blue {\n    color: #4C90F5;\n}\n\n.g-red {\n    color: #ED4D3C;\n}\n\n.g-yellow {\n    color: #FBC402;\n}\n\n.g-green {\n    color: #3BB15D;\n}\n\n.btn-primary {\n    background-color: #F5F5F5;\n    color: #808080;\n    border: none;\n    font-weight: bold;\n    border-radius: 2px;\n}\n\n.brand-img {\n    width: 100%;\n}\n\n.result.card {\n    border: none;\n    background-color: whitesmoke;\n}\n\n.result {\n    padding: 0.4rem;\n}\n\n.raw-result {\n    background-color: whitesmoke;\n    font-size: 0.8em;\n}\n\n.raw-result-trigger {\n    font-size: 0.8em;\n}\n\n.ui-menu .ui-menu-item-wrapper {\n    padding: 0;\n}\n\n.ui-menu .ui-menu-item-wrapper:hover {\n    color: #ED4D3C;\n}"; });
 //# sourceMappingURL=app-bundle.js.map
