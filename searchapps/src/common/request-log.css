@@ -2,11 +2,20 @@
     background-color: #0B2841;
 }
 
+.mini-bar {
+    width: 100%;
+    height: 5px;
+    display: block;
+}
+
 .json-output-trigger {
     padding: 10px;
 }
 
 .json-output-trigger a {
+    color: #E93F65;
+}
+.json-output-trigger .btn {
     background-color: #E93F65;
     padding: 5px;
     color: #FFF;
