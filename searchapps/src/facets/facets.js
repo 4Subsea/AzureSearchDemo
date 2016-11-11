@@ -13,7 +13,7 @@ export class Facets {
 
     search() {
         this.api
-            .search(this.query, this.filter)
+            .faceted(this.query, this.filter)
             .then(result => {
                 console.log(result);
                 this.count = result.count;

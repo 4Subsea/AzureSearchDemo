@@ -78,11 +78,11 @@ export class SearchApi {
                             breweries: facets.breweries,
                             created: facets.created,
                         },
-                        count: jsonResponse["@odata.count"],
                         results: jsonResponse.value.map(x => {
                             return {
                                 name: x.name,
                                 description: x.description,
+                                alcoholPercentage: x.abv,
                                 label: x.labelmediumimage,
                                 style: x.stylename,
                                 brewery: x.breweries[0]

@@ -61,11 +61,28 @@
 
                 <div class="main-pane col-sm-8">
                     <div class="search-result card">
-                        <ul class="list-group list-group-flush">
-                            <li repeat.for="result of results" class="list-group-item">
-                                ${result.name}
-                            </li>
-                        </ul>
+                        <div class="list-group list-group-flush">
+                            <div repeat.for="result of results" class="list-group-item">
+                                <div class="media">
+                                    <a class="media-left" href="#">
+                                        <img if.bind="result.label" class="media-object" src="${result.label}" alt="Beer label">
+                                        <img if.bind="!result.label" class="media-object" src="http://placehold.it/254x254" alt="Placeholder image when label is missing"
+                                        />
+                                    </a>
+                                    <div class="media-body">
+                                        <h4 class="media-heading">${result.name}</h4>
+                                        <div if.bind="result.description">${result.description}</div>
+                                        <div if.bind="!result.description" class="text-muted font-italic small">Missing description</div>
+                                        <div class="row">
+                                            <div class="text-muted col-sm-6 brewery-name">${result.brewery}</div>
+                                            <div if.bind="result.alcoholPercentage" class="display-4 col-sm-6"><strong>${result.alcoholPercentage} %</strong></div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
