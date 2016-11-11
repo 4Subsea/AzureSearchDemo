@@ -1,9 +1,13 @@
-import { SearchApi } from 'services/search-api';
+import { SearchApi } from "services/search-api";
+import { MultiCollectionSubscriber } from "common/multi-subscriber";
+
 
 export class Facets {
-    static inject = [SearchApi];
-    constructor(api) {
+    static inject = [SearchApi, MultiCollectionSubscriber];
+    constructor(api, subscriber) {
         this.api = api;
+        this.subscriber = subscriber;
+
         this.query = "";
         this.filter = "";
         this.results = [];
@@ -14,7 +18,12 @@ export class Facets {
         this.selectedStyle = [];
         this.selectedAbv = [];
         this.selectedCreated = [];
+
+        this.subscriber
+            .observe([this.selectedBrewery, this.selectedStyle, this.selectedAbv, this.selectedCreated])
+            .onChanged(change => console.log(change));
     }
+
 
     search() {
         this.api
@@ -23,18 +32,14 @@ export class Facets {
                 this.count = result.count;
                 this.results = result.results;
                 this.facets = result.facets;
-                // for (var facetName in this.facets) {
-                //     this.facets[facetName].map(x => {
-                //         x.isChecked = false;
-                //         return x;
-                //     })
-                // }
-
-                console.log(this.facets);
             })
     }
 
     attached() {
         this.search();
+    }
+
+    detached() {
+        this.subscriber.dispose();
     }
 }
