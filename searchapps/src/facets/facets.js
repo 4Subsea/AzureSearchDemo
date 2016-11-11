@@ -9,7 +9,6 @@ export class Facets {
         this.subscriber = subscriber;
 
         this.query = "";
-        this.filter = "";
         this.results = [];
         this.count = null;
         this.facets = null;
@@ -21,18 +20,30 @@ export class Facets {
 
         this.subscriber
             .observe([this.selectedBrewery, this.selectedStyle, this.selectedAbv, this.selectedCreated])
-            .onChanged(change => console.log(change));
+            .onChanged(change => this.search());
     }
 
 
     search() {
+        var filter = this.buildFilter();
+
         this.api
-            .faceted(this.query, this.filter)
+            .faceted(this.query, filter)
             .then(result => {
                 this.count = result.count;
                 this.results = result.results;
                 this.facets = result.facets;
             })
+    }
+
+    buildFilter() {
+        // var stylenameFilter = this.selectedStyle.reduce((aggregated, curr) => {
+        //     return aggregated += 'stylename eq ${expression}'
+        // })
+
+        var stylenameFilter = this.selectedStyle[0] === undefined ? "" : "stylename eq '" + this.selectedStyle[0] + "'";
+        console.log(stylenameFilter);
+        return stylenameFilter;
     }
 
     attached() {
