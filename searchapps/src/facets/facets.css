@@ -20,12 +20,11 @@
 
 .right-menu {
     background-color: #056EFC;
-    width: 500px;
     text-align: center;
 }
 
 .right-menu a {
-    padding: 0 20px;
+    
 }
 
 .logo-text {
@@ -72,4 +71,8 @@
 
 .facet-group-title {
     margin: 10px auto;
+}
+
+.brewery-name {
+    margin-top: 20px;
 }

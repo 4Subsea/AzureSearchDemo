@@ -33,8 +33,7 @@ export class SearchApi {
                                 style: x.stylename,
                                 brewery: x.breweries[0]
                             }
-                        }),
-                        raw: jsonResult
+                        })
                     });
                 });
         });
@@ -46,13 +45,57 @@ export class SearchApi {
                 .post("/suggest", {
                     search: query,
                     suggesterName: "suggestBeerName",
-                    highlightPreTag: "<b>",
-                    highlightPostTag: "</b>"
+                    highlightPreTag: "<strong>",
+                    highlightPostTag: "</strong>"
                 })
                 .then(result => {
                     var results = JSON.parse(result.response).value;
-                    console.log(results);
                     resolve(results.map(x => x["@search.text"]));
+                });
+        })
+    }
+
+    faceted(query, filter) {
+        return new Promise(resolve => {
+            this.httpClient
+                .post("/search", {
+                    facets: [
+                        "stylename",
+                        "abv,values:5|10|15",
+                        "breweries",
+                        "created,interval:year"
+                    ],
+                    search: query,
+                    filter: filter
+                })
+                .then(result => {
+                    var jsonResponse = JSON.parse(result.response);
+                    var facets = jsonResponse["@search.facets"];
+                    var mapped = {
+                        facets: {
+                            stylename: facets.stylename,
+                            abv: facets.abv,
+                            breweries: facets.breweries,
+                            created: facets.created.map(x => {
+                                return {
+                                    value: new Date(x.value).getFullYear(),
+                                    count: x.count
+                                }
+                            }),
+                        },
+                        results: jsonResponse.value.map(x => {
+                            return {
+                                name: x.name,
+                                description: x.description,
+                                alcoholPercentage: x.abv,
+                                label: x.labelmediumimage,
+                                style: x.stylename,
+                                brewery: x.breweries[0]
+                            }
+                        })
+                    }
+
+                    resolve(mapped);
                 });
         })
     }
