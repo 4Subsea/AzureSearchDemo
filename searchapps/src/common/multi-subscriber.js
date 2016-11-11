@@ -5,28 +5,26 @@ export class MultiCollectionSubscriber {
 
     constructor(bindingEngine) {
         this.bindingEngine = bindingEngine;
-        this.listsToSubscribe = [];
+        this.observers = []
         this.subscriptions = [];
     }
 
-    observe(lists) {
-        lists.forEach(list => this.listsToSubscribe.push(list));
-
-        return this;
-    }
-
-    onChanged(execute) {
-        this.listsToSubscribe.forEach(list => {
-            let subscription = this.bindingEngine
-                .collectionObserver(list)
-                .subscribe(changes => execute(changes));
-            this.subscriptions.push(subscription);
+    observe(collection) {
+        collection.forEach(x => {
+            let observer = this.bindingEngine.collectionObserver(x);
+            this.observers.push(observer)
         });
 
         return this;
     }
 
+    onChanged(execute) {
+        this.observers
+            .forEach(x => this.subscriptions.push(x.subscribe(change => execute(change))));
+    }
+
     dispose() {
         this.subscriptions.forEach(x => x.dispose());
+        this.observers = [];
     }
 }
