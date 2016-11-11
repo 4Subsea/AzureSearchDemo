@@ -74,7 +74,7 @@ export class SearchApi {
                     var mapped = {
                         facets: {
                             stylename: facets.stylename,
-                            alcoholPercentage: facets.abv,
+                            abv: facets.abv,
                             breweries: facets.breweries,
                             created: facets.created.map(x => {
                                 return {

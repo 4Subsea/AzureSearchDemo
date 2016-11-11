@@ -32,35 +32,51 @@
                             <div class="facet-group-title"><strong>Brewery</strong></div>
                             <div repeat.for="facet of facets.breweries" class="form-check">
                                 <label class="form-check-label">
-                                <input class="form-check-input" type="checkbox" value="">
+                                <input class="form-check-input" type="checkbox" model.bind="facet.value" checked.bind="selectedBrewery">
                                     ${facet.value} (${facet.count})
                                 </label>
                             </div>
+
+                            <ul>
+                                <li repeat.for="item of selectedBrewery">${item}</li>
+                            </ul>
 
                             <div class="facet-group-title"><strong>Style</strong></div>
                             <div repeat.for="facet of facets.stylename" class="form-check">
                                 <label class="form-check-label">
-                                <input class="form-check-input" type="checkbox" value="">
+                                <input class="form-check-input" type="checkbox" model.bind="facet.value" checked.bind="selectedStyle">
                                     ${facet.value} (${facet.count})
                                 </label>
                             </div>
 
-                            <div class="facet-group-title"><strong>Style</strong></div>
-                            <div repeat.for="facet of facets.alcoholPercentage" class="form-check">
+                            <ul>
+                                <li repeat.for="item of selectedStyle">${item}</li>
+                            </ul>
+
+                            <div class="facet-group-title"><strong>Alcohol by Volume</strong></div>
+                            <div repeat.for="facet of facets.abv" class="form-check">
                                 <label class="form-check-label">
-                                <input class="form-check-input" type="checkbox" value="">
-                                    <span if.bind="facet.from">${facet.from}</span>
-                                     - <span if.bind="facet.to">${facet.to}</span> (${facet.count})
+                                <input class="form-check-input" type="checkbox" model.bind="facet" checked.bind="selectedAbv">
+                                    <span if.bind="facet.from">${facet.from}%</span>
+                                     - <span if.bind="facet.to">${facet.to}%</span> (${facet.count})
                                 </label>
                             </div>
+
+                            <ul>
+                                <li repeat.for="item of selectedAbv">${item.from} - ${item.to}</li>
+                            </ul>
 
                             <div class="facet-group-title"><strong>Created</strong></div>
                             <div repeat.for="facet of facets.created" class="form-check">
                                 <label class="form-check-label">
-                                <input class="form-check-input" type="checkbox" value="">
+                                <input class="form-check-input" type="checkbox" model.bind="facet.value" checked.bind="selectedCreated">
                                     ${facet.value} (${facet.count})
                                 </label>
                             </div>
+
+                            <ul>
+                                <li repeat.for="item of selectedCreated">${item}</li>
+                            </ul>
 
                         </div>
                     </div>
@@ -72,8 +88,8 @@
                             <div repeat.for="result of results" class="list-group-item">
                                 <div class="media">
                                     <a class="media-left" href="#">
-                                        <img if.bind="result.label" class="media-object" src="${result.label}" alt="Beer label">
-                                        <img if.bind="!result.label" class="media-object" src="http://placehold.it/254x254" alt="Placeholder image when label is missing"
+                                        <img if.bind="result.label" class="media-object media-left" src="${result.label}" alt="Beer label">
+                                        <img if.bind="!result.label" class="media-object media-left" src="http://placehold.it/254x254" alt="Placeholder image when label is missing"
                                         />
                                     </a>
                                     <div class="media-body">
