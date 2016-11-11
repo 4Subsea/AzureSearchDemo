@@ -76,7 +76,12 @@ export class SearchApi {
                             stylename: facets.stylename,
                             alcoholPercentage: facets.abv,
                             breweries: facets.breweries,
-                            created: facets.created,
+                            created: facets.created.map(x => {
+                                return {
+                                    value: new Date(x.value).getFullYear(),
+                                    count: x.count
+                                }
+                            }),
                         },
                         results: jsonResponse.value.map(x => {
                             return {
