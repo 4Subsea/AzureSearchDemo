@@ -8,7 +8,7 @@
                     <div class="left-menu col-xs-5">
                         <span>
                             <span class="btn logo-text logo">&nbsp</span>
-                            <span class="btn logo-text">BEER</span>
+                        <span class="btn logo-text">BEER</span>
                         </span>
                         <span class="slogan">The Beer market</span>
                     </div>
@@ -18,7 +18,7 @@
                         <div class="col-xs-3"><a class="nav-link" href="#"><i class="fa fa-lg fa-bell" aria-hidden="true"></i> Haz</a></div>
                         <div class="col-xs-3"><a class="nav-link" href="#"><i class="fa fa-lg fa-user-circle" aria-hidden="true"></i> Beer</a></div>
                     </nav>
-                </div>   
+                </div>
             </div>
         </div>
         <div class="container search-area">
@@ -33,9 +33,9 @@
                                 <input class="form-check-input" type="checkbox" value="">
                                     Indian Pale Ale
                                 </label>
-                                </div>
+                            </div>
                             <div class="form-check">
-                                    <label class="form-check-label">
+                                <label class="form-check-label">
                                     <input class="form-check-input" type="checkbox" value="">
                                     Oatmeal Porter
                                     </label>
@@ -48,9 +48,9 @@
                                 <input class="form-check-input" type="checkbox" value="">
                                     Indian Pale Ale
                                 </label>
-                                </div>
+                            </div>
                             <div class="form-check">
-                                    <label class="form-check-label">
+                                <label class="form-check-label">
                                     <input class="form-check-input" type="checkbox" value="">
                                     Oatmeal Porter
                                     </label>
@@ -62,15 +62,15 @@
                 <div class="main-pane col-sm-8">
                     <div class="search-result card">
                         <ul class="list-group list-group-flush">
-                            <li class="list-group-item">Cras justo odio</li>
-                            <li class="list-group-item">Dapibus ac facilisis in</li>
-                            <li class="list-group-item">Vestibulum at eros</li>
+                            <li repeat.for="result of results" class="list-group-item">
+                                ${result.name}
+                            </li>
                         </ul>
                     </div>
                 </div>
             </div>
         </div>
-        
+
     </div>
-    
+
 </template>
