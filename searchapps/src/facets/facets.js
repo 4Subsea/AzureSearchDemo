@@ -19,11 +19,25 @@ export class Facets {
         this.selectedCreated = [];
 
         this.subscriber
-            .observe([this.selectedBrewery, this.selectedStyle, this.selectedAbv, this.selectedCreated])
+            .observe([this.selectedAbv])
             .onChanged(change => this.search());
     }
 
     abvFacetMatcher = (a, b) => a.from === b.from && a.to === b.to;
+
+    clear() {
+        this.query = "";
+        this.results = [];
+        this.count = null;
+        this.facets = null;
+
+        this.selectedBrewery = [];
+        this.selectedStyle = [];
+        this.selectedAbv = [];
+        this.selectedCreated = [];
+
+        this.search();
+    }
 
     search() {
         var filter = this.buildFilter();
