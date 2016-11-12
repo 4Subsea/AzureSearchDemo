@@ -5,12 +5,12 @@
 		<div class="search-container ${results.length > 0 ? 'has-results' : ''}">
 			<div if.bind="!hasResults" class="text-xs-center search-title-container">
 				<h1 class="search-title">
-					<span class="g-blue">S</span>
+					<span class="g-blue">B</span>
 					<span class="g-red">e</span>
-					<span class="g-yellow">a</span>
-					<span class="g-blue">r</span>
-					<span class="g-green">c</span>
-					<span class="g-red">h</span>
+					<span class="g-yellow">e</span>
+					<span class="g-blue">e</span>
+					<span class="g-green">e</span>
+					<span class="g-red">r</span>
 				</h1>
 			</div>
 			<form submit.delegate="search()">
@@ -18,17 +18,17 @@
 					<input type="text" value.bind="queryText" class="search-input col-md-6 col-xs-8 offset-xs-2 offset-md-3">
 				</div>
 				<div class="search-button-row">
-					<input type="submit" value="Search Search" class="btn btn-primary search-button">
+					<input type="submit" value="Search Beer" class="btn btn-primary search-button">
 					<input type="button" click.delegate="tired()" value="I'm Feeling Tired" class="btn btn-primary search-button">
 				</div>
 			</form>
 		</div>
-			
+
 		<div class="row" if.bind="hasResults">
 			<p>
-				Found <span class="tag tag-info">${count}</span>, displaying <span class="tag tag-info">${results.length}</span>. 
+				Found <span class="tag tag-info">${count}</span>, displaying <span class="tag tag-info">${results.length}</span>.
 			</p>
-			
+
 			<div class="card-columns">
 				<div repeat.for="result of results" class="card">
 					<img if.bind="result.label" class="card-img-top" width="100%" src="${result.label}" alt="Card image cap">
