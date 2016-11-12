@@ -23,10 +23,6 @@
     text-align: center;
 }
 
-.right-menu a {
-    
-}
-
 .logo-text {
     font-size: 14px;
     font-family: Montserrat;
@@ -75,4 +71,34 @@
 
 .brewery-name {
     margin-top: 20px;
+}
+
+.facet-search-button{
+    background-color: transparent;
+    border: 1px solid #06BEFB;
+    color: #0063FB;
+    border-radius: 2px;
+    
+}
+
+.facet-search-button:hover {
+    background-color: #F1F9FF;
+}
+
+.search-reset-buttons {
+    margin: 20px 0;
+}
+
+.search-reset-button {
+    display: table-cell;
+    vertical-align: bottom;
+}
+
+.same-height-container {
+    display: table;
+    width: 100%;
+}
+
+.same-height-container::first-child{
+    margin-right: 20px;
 }

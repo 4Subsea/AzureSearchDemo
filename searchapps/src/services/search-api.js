@@ -66,7 +66,8 @@ export class SearchApi {
                         "created,interval:year"
                     ],
                     search: query,
-                    filter: filter
+                    filter: filter,
+                    count: true
                 })
                 .then(result => {
                     var jsonResponse = JSON.parse(result.response);
@@ -92,7 +93,8 @@ export class SearchApi {
                                 style: x.stylename,
                                 brewery: x.breweries[0]
                             }
-                        })
+                        }),
+                        count: jsonResponse["@odata.count"],
                     }
 
                     resolve(mapped);
