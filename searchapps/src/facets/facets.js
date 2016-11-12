@@ -40,12 +40,8 @@ export class Facets {
     }
 
     search() {
-        var filter = this.buildFilter();
-
-        console.log("filter is:" + filter);
-
         this.api
-            .faceted(this.query, filter)
+            .faceted(this.query, this.buildFilter())
             .then(result => {
                 this.count = result.count;
                 this.results = result.results;

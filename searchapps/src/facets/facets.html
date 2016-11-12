@@ -76,6 +76,7 @@
 
                 <div class="main-pane col-sm-8 ">
                     <div class="search-result card ">
+                        <div class="text-xs-right">Results: <strong>${count}</strong></div>
                         <div class="list-group list-group-flush ">
                             <div repeat.for="result of results " class="list-group-item ">
                                 <div class="media ">
@@ -91,7 +92,7 @@
                                         <div if.bind="!result.description " class="text-muted font-italic small ">Missing description</div>
                                         <div class="row ">
                                             <div class="text-muted col-sm-6 brewery-name ">${result.brewery}</div>
-                                            <div if.bind="result.alcoholPercentage " class="display-4 col-sm-6 "><strong>${result.alcoholPercentage} %</strong></div>
+                                            <div if.bind="result.alcoholPercentage" class="display-4 col-sm-6 "><strong>${result.alcoholPercentage} %</strong></div>
                                         </div>
                                     </div>
                                 </div>
