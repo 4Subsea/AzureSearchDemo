@@ -102,14 +102,21 @@ export class SearchApi {
         })
     }
 
-    nearest(query, location) {
+    nearest(query, location, radiusLimit) {
+        let geoDistance = `geo.distance(brewerylocation, geography'POINT(${location.lng} ${location.lat})')`;
+        let filter = "(brewerylocation ne null)";
+
+        if (radiusLimit) {
+            filter += ` and (${geoDistance} le ${radiusLimit})`;
+        }
+
         return new Promise(resolve => {
             this.httpClient
                 .post("/search", {
                     count: true,
                     search: query,
-                    filter: "brewerylocation ne null",
-                    orderby: `geo.distance(brewerylocation, geography'POINT(${location.lng} ${location.lat})')`
+                    filter: filter,
+                    orderby: geoDistance,
                 })
                 .then(result => {
                     let jsonResult = JSON.parse(result.response);

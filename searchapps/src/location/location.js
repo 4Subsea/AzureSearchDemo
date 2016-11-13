@@ -19,7 +19,7 @@ export class Location {
         this.clearMapMarkers();
 
         this.searchApi
-            .nearest(this.queryText, this.location)
+            .nearest(this.queryText, this.location, this.radiusLimit)
             .then(x => {
                 this.results = x.results.map(x => {
                     x.distance = Math.round(this.calculateDistance(this.location.lat, this.location.lng, x.lat, x.lng));
