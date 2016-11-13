@@ -2,13 +2,23 @@
     font-family: "Raleway";
 }
 
-.menu-bar{
-    padding: 20px;
-    min-height: 10vh;
-}
-
 .logo {
     color: #FF656A;
+    padding: 20px;
+    border-right: 1px solid #dce0e0;
+}
+
+.search-input {
+    margin-top: 20px;
+}
+
+.search-input .input-group-addon{
+    background-color: transparent;
+}
+
+.search-input .input-group-addon, .search-input .form-control{
+    border: none;
+    border-bottom: 1px solid #dce0e0;
 }
 
 .nav-links {

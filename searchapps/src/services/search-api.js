@@ -101,4 +101,31 @@ export class SearchApi {
                 });
         })
     }
+
+    searchRequireLocation(query) {
+        return new Promise(resolve => {
+            this.httpClient
+                .post("/search", {
+                    count: true,
+                    search: query,
+                    filter: "brewerylocation ne null"
+                })
+                .then(result => {
+                    let jsonResult = JSON.parse(result.response);
+                    resolve({
+                        count: jsonResult["@odata.count"],
+                        results: jsonResult["value"].map(x => {
+                            return {
+                                name: x.name,
+                                label: x.labelmediumimage,
+                                style: x.stylename,
+                                brewery: x.breweries[0],
+                                lat: x.brewerylocation.coordinates[0],
+                                long: x.breweryloctaion.coordinates[1]
+                            }
+                        })
+                    });
+                });
+        });
+    }
 }
