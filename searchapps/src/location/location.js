@@ -12,6 +12,7 @@ export class Location {
         this.location = {};
         this.results = []
         this.count = [];
+        this.markers = [];
 
         this.subscriber
             .observe([this.results])
@@ -19,6 +20,8 @@ export class Location {
     }
 
     search() {
+        this.clearMapMarkers();
+
         this.searchApi
             .nearest(this.queryText, this.location)
             .then(x => {
@@ -33,14 +36,34 @@ export class Location {
     }
 
     createMapMarkers() {
+
         this.results.forEach(result => {
-            console.log("trying to create markers");
             var latLng = new google.maps.LatLng(result.lat, result.lng);
             var marker = new google.maps.Marker({
                 position: latLng,
-                map: this.map
+                map: this.map,
+                animation: google.maps.Animation.DROP
+            });
+
+            this.markers.push(marker);
+
+            var infowindow = new google.maps.InfoWindow({
+                content: result.brewery
+            });
+
+            marker.addListener('mouseover', function() {
+                infowindow.open(map, marker);
+            });
+
+            marker.addListener('mouseout', function() {
+                infowindow.close();
             });
         });
+    }
+
+    clearMapMarkers() {
+        this.markers.forEach(marker => marker.setMap(null));
+        this.markers = [];
     }
 
     attached() {
