@@ -96,13 +96,7 @@ export class Location {
             styles: [{ "featureType": "administrative", "elementType": "labels.text.fill", "stylers": [{ "color": "#444444" }] }, { "featureType": "landscape", "elementType": "all", "stylers": [{ "color": "#f2f2f2" }] }, { "featureType": "poi", "elementType": "all", "stylers": [{ "visibility": "off" }] }, { "featureType": "poi.business", "elementType": "geometry.fill", "stylers": [{ "visibility": "on" }] }, { "featureType": "road", "elementType": "all", "stylers": [{ "saturation": -100 }, { "lightness": 45 }] }, { "featureType": "road.highway", "elementType": "all", "stylers": [{ "visibility": "simplified" }] }, { "featureType": "road.arterial", "elementType": "labels.icon", "stylers": [{ "visibility": "off" }] }, { "featureType": "transit", "elementType": "all", "stylers": [{ "visibility": "off" }] }, { "featureType": "water", "elementType": "all", "stylers": [{ "color": "#b4d4e1" }, { "visibility": "on" }] }]
         });
 
-        this.map.addListener('zoom_changed', () => {
-            if (this.mapSearch === true) {
-                this.searchWithinMapBoundaries();
-            }
-        });
-
-        this.map.addListener("dragend", () => {
+        this.map.addListener('idle', () => {
             if (this.mapSearch === true) {
                 this.searchWithinMapBoundaries();
             }
@@ -152,6 +146,4 @@ export class Location {
         let d = R * c; // Distance in km
         return d;
     }
-
-
 }
