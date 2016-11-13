@@ -16,9 +16,19 @@
             </div>
         </div>
         <div class="main-area row">
-            <div class="col-sm-6 search-result h-100">
+            <div class="col-sm-6 search-result h-100 row">
                 <div repeat.for="result of results">
-                    ${result.name}, ${result.brewery}, ${result.lat}, ${result.lng}, ${result.distance} km
+                    <div class="col-xs-6 single-result">
+                        <div if.bind="result.label" class="label" style="background: url(${result.label});">
+                        </div>
+                        <div if.bind="!result.label" class="label">
+                        </div>
+                        <div class="float-xs-left">
+                            <h5 class="display-5">${result.name}</h5>
+                            <div class="text-muted">${result.brewery}</div>
+                        </div>
+                        <div class="float-xs-right display-5">${result.distance} km</div>
+                    </div>
                 </div>
             </div>
             <div class="col-sm-6 map h-100">
