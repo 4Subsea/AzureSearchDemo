@@ -1,14 +1,54 @@
 export class Location {
     attached() {
-        //initMap();
+        this.initializeMap();
+    }
 
-        let scriptURL = "https://maps.googleapis.com/maps/api/js?key=AIzaSyCpc-ixRTVtC3qx-55OvECcX01bEw9siCA&callback=initMap";
+    onMapInitialized() {
+        this.map = new google.maps.Map(document.getElementById('map'), {
+            center: { lat: -34.397, lng: 150.644 },
+            zoom: 8
+        });
+
+        // var map;
+        // function initMap() {
+        //     map = new google.maps.Map(document.getElementById('map'), {
+        //         center: { lat: -34.397, lng: 150.644 },
+        //         zoom: 12
+        //     });
+        //     var infoWindow = new google.maps.InfoWindow({ map: map });
+
+        //     // Try HTML5 geolocation.
+        //     if (navigator.geolocation) {
+        //         navigator.geolocation.getCurrentPosition(function(position) {
+        //             var pos = {
+        //                 lat: position.coords.latitude,
+        //                 lng: position.coords.longitude
+        //             };
+
+        //             infoWindow.setPosition(pos);
+        //             infoWindow.setContent('Location found.');
+        //             map.setCenter(pos);
+        //         }, function() {
+        //             handleLocationError(true, infoWindow, map.getCenter());
+        //         });
+        //     } else {
+        //         // Browser doesn't support Geolocation
+        //         handleLocationError(false, infoWindow, map.getCenter());
+        //     }
+        // }
+
+        // function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+        //     infoWindow.setPosition(pos);
+        //     infoWindow.setContent(browserHasGeolocation ?
+        //         'Error: The Geolocation service failed.' :
+        //         'Error: Your browser doesn\'t support geolocation.');
+        // }
+    }
+
+    initializeMap() {
+        window.initMap = () => this.onMapInitialized();
         let scriptElement = document.createElement('script');
-        scriptElement.src = scriptURL;
-        scriptElement.onload = () => {
-            // console.log($('#map'));
-        };
-
+        scriptElement.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyCpc-ixRTVtC3qx-55OvECcX01bEw9siCA&callback=initMap";
         document.querySelector('body').appendChild(scriptElement);
     }
 }
