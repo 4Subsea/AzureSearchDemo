@@ -14,23 +14,14 @@
                     </div>
                 </form>
             </div>
-            <!--<nav class="nav-links float-xs-right">
-                <ul class="nav navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Link</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Link</a>
-                    </li>
-                </ul>
-            </nav>-->
         </div>
         <div class="main-area row">
-            <div class="col-sm-7 search-result h-100"></div>
-            <div class="col-sm-5 map h-100">
+            <div class="col-sm-6 search-result h-100">
+                <div repeat.for="result of results">
+                    ${result.name}, ${result.brewery}, ${result.lat}, ${result.lng}
+                </div>
+            </div>
+            <div class="col-sm-6 map h-100">
                 <div id="map"></div>
             </div>
         </div>

@@ -108,7 +108,8 @@ export class SearchApi {
                 .post("/search", {
                     count: true,
                     search: query,
-                    filter: "brewerylocation ne null"
+                    filter: "brewerylocation ne null",
+                    orderby: "geo.distance(brewerylocation, geography'POINT(10.727702 59.917081)')"
                 })
                 .then(result => {
                     let jsonResult = JSON.parse(result.response);
@@ -119,9 +120,10 @@ export class SearchApi {
                                 name: x.name,
                                 label: x.labelmediumimage,
                                 style: x.stylename,
+                                alcoholPercentage: x.abv,
                                 brewery: x.breweries[0],
                                 lat: x.brewerylocation.coordinates[0],
-                                long: x.breweryloctaion.coordinates[1]
+                                lng: x.brewerylocation.coordinates[1]
                             }
                         })
                     });
