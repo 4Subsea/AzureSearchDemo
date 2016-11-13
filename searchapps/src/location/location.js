@@ -114,7 +114,7 @@ export class Location {
                     console.log(this.location);
 
                     resolve();
-                });
+                }, error => resolve());
             } else {
                 resolve();
             }
