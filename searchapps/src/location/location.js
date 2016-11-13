@@ -15,7 +15,10 @@ export class Location {
         this.searchApi
             .nearest(this.queryText, this.location)
             .then(x => {
-                this.results = x.results;
+                this.results = x.results.map(x => {
+                    x.distance = Math.round(this.calculateDistance(this.location.lat, this.location.lng, x.lat, x.lng));
+                    return x;
+                });
                 this.count = x.count;
             });
     }
@@ -70,4 +73,24 @@ export class Location {
         scriptElement.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyCpc-ixRTVtC3qx-55OvECcX01bEw9siCA&callback=initMap";
         document.querySelector('body').appendChild(scriptElement);
     }
+
+    calculateDistance(lat1, lon1, lat2, lon2) {
+        function deg2rad(deg) {
+            return deg * (Math.PI / 180)
+        }
+
+        let R = 6371; // Radius of the earth in km
+        let dLat = deg2rad(lat2 - lat1);  // deg2rad below
+        let dLon = deg2rad(lon2 - lon1);
+        let a =
+            Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+            Math.sin(dLon / 2) * Math.sin(dLon / 2)
+            ;
+        let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        let d = R * c; // Distance in km
+        return d;
+    }
+
+
 }
