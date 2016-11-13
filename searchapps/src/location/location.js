@@ -31,8 +31,29 @@ export class Location {
             });
     }
 
-    createMapMarkers() {
+    searchWithinMapBoundaries() {
+        this.clearMapMarkers();
 
+        let mapBoundary = this.map.getBounds().toJSON();
+        let rectangle = {
+            topLeft: `${mapBoundary.west} ${mapBoundary.north}`,
+            bottomLeft: `${mapBoundary.west} ${mapBoundary.south}`,
+            bottomRight: `${mapBoundary.east} ${mapBoundary.south}`,
+            topRight: `${mapBoundary.east} ${mapBoundary.north}`
+        }
+        this.searchApi.withinGeoBoundary(rectangle)
+            .then(x => {
+                this.results = x.results.map(x => {
+                    x.distance = Math.round(this.calculateDistance(this.location.lat, this.location.lng, x.lat, x.lng));
+                    return x;
+                });
+                this.count = x.count;
+
+                this.createMapMarkers();
+            });
+    }
+
+    createMapMarkers() {
         this.results.forEach(result => {
             var latLng = new google.maps.LatLng(result.lat, result.lng);
             var marker = new google.maps.Marker({
@@ -76,14 +97,15 @@ export class Location {
         });
 
         this.map.addListener('zoom_changed', () => {
-            console.log("zoom changed");
-            console.log(this.map.getBounds());
-            console.log(this.map.getBounds().toJSON());
+            if (this.mapSearch === true) {
+                this.searchWithinMapBoundaries();
+            }
         });
 
         this.map.addListener("dragend", () => {
-            console.log("drag ended");
-            console.log(this.map.getBounds());
+            if (this.mapSearch === true) {
+                this.searchWithinMapBoundaries();
+            }
         });
     }
 

@@ -117,6 +117,38 @@ export class SearchApi {
                     search: query,
                     filter: filter,
                     orderby: geoDistance,
+                    top: 100
+                })
+                .then(result => {
+                    let jsonResult = JSON.parse(result.response);
+                    resolve({
+                        count: jsonResult["@odata.count"],
+                        results: jsonResult["value"].map(x => {
+                            return {
+                                name: x.name,
+                                label: x.labelmediumimage,
+                                style: x.stylename,
+                                alcoholPercentage: x.abv,
+                                brewery: x.breweries[0],
+                                lng: x.brewerylocation.coordinates[0],
+                                lat: x.brewerylocation.coordinates[1]
+                            }
+                        })
+                    });
+                });
+        });
+    }
+
+    withinGeoBoundary(polygon) {
+        let polygonPoints = `${polygon.topLeft}, ${polygon.bottomLeft}, ${polygon.bottomRight}, ${polygon.topRight}, ${polygon.topLeft}`;
+
+        return new Promise(resolve => {
+            this.httpClient
+                .post("/search", {
+                    count: true,
+                    search: "",
+                    top: 1000,
+                    filter: `geo.intersects(brewerylocation, geography'POLYGON((${polygonPoints}))')`
                 })
                 .then(result => {
                     let jsonResult = JSON.parse(result.response);
