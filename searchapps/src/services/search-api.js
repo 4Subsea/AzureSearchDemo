@@ -102,14 +102,16 @@ export class SearchApi {
         })
     }
 
-    searchRequireLocation(query) {
+    nearest(query, location) {
         return new Promise(resolve => {
             this.httpClient
                 .post("/search", {
                     count: true,
                     search: query,
                     filter: "brewerylocation ne null",
-                    orderby: "geo.distance(brewerylocation, geography'POINT(10.727702 59.917081)')"
+                    orderby: `geo.distance(brewerylocation, geography'POINT(${location.lng} ${location.lat})')`,
+                    top: 10
+
                 })
                 .then(result => {
                     let jsonResult = JSON.parse(result.response);
@@ -122,8 +124,8 @@ export class SearchApi {
                                 style: x.stylename,
                                 alcoholPercentage: x.abv,
                                 brewery: x.breweries[0],
-                                lat: x.brewerylocation.coordinates[0],
-                                lng: x.brewerylocation.coordinates[1]
+                                lng: x.brewerylocation.coordinates[0],
+                                lat: x.brewerylocation.coordinates[1]
                             }
                         })
                     });

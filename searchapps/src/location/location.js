@@ -6,14 +6,14 @@ export class Location {
     constructor(searchApi) {
         this.searchApi = searchApi;
         this.queryText = "";
-
+        this.location = {};
         this.results = []
         this.count = [];
     }
 
     search() {
         this.searchApi
-            .searchRequireLocation(this.queryText)
+            .nearest(this.queryText, this.location)
             .then(x => {
                 this.results = x.results;
                 this.count = x.count;
@@ -25,8 +25,9 @@ export class Location {
     }
 
     onMapInitialized() {
+        this.location = { lat: 59.917081, lng: 10.727702 };
         this.map = new google.maps.Map(document.getElementById('map'), {
-            center: { lat: 59.917081, lng: 10.727702 },
+            center: this.location,
             zoom: 10,
             styles: [{ "featureType": "administrative", "elementType": "labels.text.fill", "stylers": [{ "color": "#444444" }] }, { "featureType": "landscape", "elementType": "all", "stylers": [{ "color": "#f2f2f2" }] }, { "featureType": "poi", "elementType": "all", "stylers": [{ "visibility": "off" }] }, { "featureType": "poi.business", "elementType": "geometry.fill", "stylers": [{ "visibility": "on" }] }, { "featureType": "road", "elementType": "all", "stylers": [{ "saturation": -100 }, { "lightness": 45 }] }, { "featureType": "road.highway", "elementType": "all", "stylers": [{ "visibility": "simplified" }] }, { "featureType": "road.arterial", "elementType": "labels.icon", "stylers": [{ "visibility": "off" }] }, { "featureType": "transit", "elementType": "all", "stylers": [{ "visibility": "off" }] }, { "featureType": "water", "elementType": "all", "stylers": [{ "color": "#b4d4e1" }, { "visibility": "on" }] }]
         });
