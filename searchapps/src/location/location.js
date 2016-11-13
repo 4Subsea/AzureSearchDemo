@@ -12,10 +12,13 @@ export class Location {
 
         this.map.addListener('zoom_changed', () => {
             console.log("zoom changed");
+            console.log(this.map.getBounds());
+            console.log(this.map.getBounds().toJSON());
         });
 
         this.map.addListener("dragend", () => {
             console.log("drag ended");
+            console.log(this.map.getBounds());
         });
 
         // var map;
