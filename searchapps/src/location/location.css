@@ -1,0 +1,29 @@
+#location {
+    font-family: "Raleway";
+}
+
+.menu-bar{
+    padding: 20px;
+    min-height: 10vh;
+}
+
+.logo {
+    color: #FF656A;
+}
+
+.nav-links {
+    font-size: 0.8em;
+}
+
+.main-area{
+    min-height: 90vh;
+    height: 1px;
+}
+
+.search-result {
+    background-color: #E93F65;
+}
+
+.map{
+    background-color: #0B2841;
+}
