@@ -109,9 +109,7 @@ export class SearchApi {
                     count: true,
                     search: query,
                     filter: "brewerylocation ne null",
-                    orderby: `geo.distance(brewerylocation, geography'POINT(${location.lng} ${location.lat})')`,
-                    top: 10
-
+                    orderby: `geo.distance(brewerylocation, geography'POINT(${location.lng} ${location.lat})')`
                 })
                 .then(result => {
                     let jsonResult = JSON.parse(result.response);
