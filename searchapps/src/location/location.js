@@ -1,14 +1,21 @@
-import { SearchApi } from "../services/search-api";
+import { SearchApi } from "services/search-api";
+import { MultiCollectionSubscriber } from "common/multi-subscriber";
 
 export class Location {
-    static inject = [SearchApi];
+    static inject = [SearchApi, MultiCollectionSubscriber];
 
-    constructor(searchApi) {
+    constructor(searchApi, subscriber) {
         this.searchApi = searchApi;
+        this.subscriber = subscriber;
+
         this.queryText = "";
         this.location = {};
         this.results = []
         this.count = [];
+
+        this.subscriber
+            .observe([this.results])
+            .onChanged(change => this.createMapMarkers());
     }
 
     search() {
@@ -20,11 +27,28 @@ export class Location {
                     return x;
                 });
                 this.count = x.count;
+
+                this.createMapMarkers();
             });
+    }
+
+    createMapMarkers() {
+        this.results.forEach(result => {
+            console.log("trying to create markers");
+            var latLng = new google.maps.LatLng(result.lat, result.lng);
+            var marker = new google.maps.Marker({
+                position: latLng,
+                map: this.map
+            });
+        });
     }
 
     attached() {
         this.initializeMap();
+    }
+
+    detached() {
+        this.subscriber.dispose();
     }
 
     onMapInitialized() {
@@ -32,7 +56,7 @@ export class Location {
 
         this.map = new google.maps.Map(document.getElementById('map'), {
             center: this.location,
-            zoom: 10,
+            zoom: 6,
             styles: [{ "featureType": "administrative", "elementType": "labels.text.fill", "stylers": [{ "color": "#444444" }] }, { "featureType": "landscape", "elementType": "all", "stylers": [{ "color": "#f2f2f2" }] }, { "featureType": "poi", "elementType": "all", "stylers": [{ "visibility": "off" }] }, { "featureType": "poi.business", "elementType": "geometry.fill", "stylers": [{ "visibility": "on" }] }, { "featureType": "road", "elementType": "all", "stylers": [{ "saturation": -100 }, { "lightness": 45 }] }, { "featureType": "road.highway", "elementType": "all", "stylers": [{ "visibility": "simplified" }] }, { "featureType": "road.arterial", "elementType": "labels.icon", "stylers": [{ "visibility": "off" }] }, { "featureType": "transit", "elementType": "all", "stylers": [{ "visibility": "off" }] }, { "featureType": "water", "elementType": "all", "stylers": [{ "color": "#b4d4e1" }, { "visibility": "on" }] }]
         });
 
