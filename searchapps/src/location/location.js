@@ -89,38 +89,39 @@ export class Location {
 
     onMapInitialized() {
         this.location = { lat: 59.917081, lng: 10.727702 };
+        this.tryRetrieveCurrentLocation().then(x => {
+            this.map = new google.maps.Map(document.getElementById('map'), {
+                center: this.location,
+                zoom: 6,
+                styles: [{ "featureType": "administrative", "elementType": "labels.text.fill", "stylers": [{ "color": "#444444" }] }, { "featureType": "landscape", "elementType": "all", "stylers": [{ "color": "#f2f2f2" }] }, { "featureType": "poi", "elementType": "all", "stylers": [{ "visibility": "off" }] }, { "featureType": "poi.business", "elementType": "geometry.fill", "stylers": [{ "visibility": "on" }] }, { "featureType": "road", "elementType": "all", "stylers": [{ "saturation": -100 }, { "lightness": 45 }] }, { "featureType": "road.highway", "elementType": "all", "stylers": [{ "visibility": "simplified" }] }, { "featureType": "road.arterial", "elementType": "labels.icon", "stylers": [{ "visibility": "off" }] }, { "featureType": "transit", "elementType": "all", "stylers": [{ "visibility": "off" }] }, { "featureType": "water", "elementType": "all", "stylers": [{ "color": "#b4d4e1" }, { "visibility": "on" }] }]
+            });
 
-        this.map = new google.maps.Map(document.getElementById('map'), {
-            center: this.location,
-            zoom: 6,
-            styles: [{ "featureType": "administrative", "elementType": "labels.text.fill", "stylers": [{ "color": "#444444" }] }, { "featureType": "landscape", "elementType": "all", "stylers": [{ "color": "#f2f2f2" }] }, { "featureType": "poi", "elementType": "all", "stylers": [{ "visibility": "off" }] }, { "featureType": "poi.business", "elementType": "geometry.fill", "stylers": [{ "visibility": "on" }] }, { "featureType": "road", "elementType": "all", "stylers": [{ "saturation": -100 }, { "lightness": 45 }] }, { "featureType": "road.highway", "elementType": "all", "stylers": [{ "visibility": "simplified" }] }, { "featureType": "road.arterial", "elementType": "labels.icon", "stylers": [{ "visibility": "off" }] }, { "featureType": "transit", "elementType": "all", "stylers": [{ "visibility": "off" }] }, { "featureType": "water", "elementType": "all", "stylers": [{ "color": "#b4d4e1" }, { "visibility": "on" }] }]
+            this.map.addListener('idle', () => {
+                if (this.mapSearch === true) {
+                    this.searchWithinMapBoundaries();
+                }
+            });
         });
 
-        this.map.addListener('idle', () => {
-            if (this.mapSearch === true) {
-                this.searchWithinMapBoundaries();
-            }
-        });
     }
 
-    // findCurrentPosition() {
-    //     if (navigator.geolocation) {
-    //         return navigator.geolocation.getCurrentPosition(function(position) {
-    //             var pos = {
-    //                 lat: position.coords.latitude,
-    //                 lng: position.coords.longitude
-    //             };
+    tryRetrieveCurrentLocation() {
+        return new Promise(resolve => {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(position => {
+                    this.location = { lat: position.coords.latitude, lng: position.coords.longitude };
+                    console.log("Successfully found position");
+                    console.log(this.location);
 
-    //             return {
-    //                 success = true,
-    //                 position = pos
-    //             }
-    //         }, () => { success = false });
-    //     }
-    //     else {
-    //         return { success = false };
-    //     }
-    // }
+                    resolve();
+                });
+            } else {
+                resolve();
+            }
+        });
+
+
+    }
 
     initializeMap() {
         window.initMap = () => this.onMapInitialized();
