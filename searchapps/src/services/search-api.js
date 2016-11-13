@@ -139,14 +139,14 @@ export class SearchApi {
         });
     }
 
-    withinGeoBoundary(polygon) {
+    withinGeoBoundary(queryText, polygon) {
         let polygonPoints = `${polygon.topLeft}, ${polygon.bottomLeft}, ${polygon.bottomRight}, ${polygon.topRight}, ${polygon.topLeft}`;
 
         return new Promise(resolve => {
             this.httpClient
                 .post("/search", {
                     count: true,
-                    search: "",
+                    search: queryText,
                     top: 1000,
                     filter: `geo.intersects(brewerylocation, geography'POLYGON((${polygonPoints}))')`
                 })

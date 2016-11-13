@@ -41,7 +41,7 @@ export class Location {
             bottomRight: `${mapBoundary.east} ${mapBoundary.south}`,
             topRight: `${mapBoundary.east} ${mapBoundary.north}`
         }
-        this.searchApi.withinGeoBoundary(rectangle)
+        this.searchApi.withinGeoBoundary(this.queryText, rectangle)
             .then(x => {
                 this.results = x.results.map(x => {
                     x.distance = Math.round(this.calculateDistance(this.location.lat, this.location.lng, x.lat, x.lng));
