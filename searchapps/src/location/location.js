@@ -11,7 +11,7 @@ export class Location {
         this.queryText = "";
         this.location = {};
         this.results = []
-        this.count = [];
+        this.count = "";
         this.markers = [];
 
         this.subscriber
