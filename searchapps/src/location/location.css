@@ -14,6 +14,23 @@
 
 .search-input {
     margin-top: 20px;
+    font-size: 0.8em;
+}
+
+.search-input input[type="text"]::-webkit-input-placeholder
+{
+    font-size:0.8em;
+}
+
+.search-input input[type="text"]::-moz-placeholder{
+    font-size:0.8em;
+}
+.search-input input[type="text"]:-moz-placeholder
+{
+    font-size:0.8em;
+}
+.search-input input[type="text"]:-ms-input-placeholder{
+    font-size:0.8em;
 }
 
 .search-input .input-group-addon{
@@ -26,6 +43,20 @@
 
 .search-input .form-control:focus{
     border-bottom: 1px solid #dce0e0;
+}
+
+.search-input .input-group:hover{
+    background-color: #FF656A;
+    border: 1px solid #FF656A;
+}
+
+.search-map-input{
+    padding-top: 6px;
+    padding-bottom: 6px;
+}
+
+.search-map-label{
+    margin-left: 15px;
 }
 
 .nav-links {

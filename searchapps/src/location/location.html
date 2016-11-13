@@ -6,12 +6,24 @@
             <div class="logo float-xs-left">
                 <i class="fa fa-2x fa-heart-o fa-flip-vertical" aria-hidden="true"></i>
             </div>
-            <div class="search-input col-xs-6">
+            <div class="search-input col-xs-10">
                 <form submit.delegate="search()">
-                    <div class="input-group">
-                        <span class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></span>
-                        <input type="text" class="form-control" value.bind="queryText">
+                    <div class="col-xs-4">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></span>
+                            <input type="text" class="form-control" value.bind="queryText">
+                        </div>
                     </div>
+                    <div class="col-xs-4">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-map-o" aria-hidden="true"></i></span>
+                            <input type="text" class="form-control" placeholder="Limit search within radius (km)" value.bind="radiusLimit">
+                        </div>
+                    </div>
+                    <div class="col-xs-4 search-map-input">
+                        <input type="checkbox" checked.bind="mapSearch"> <span class="search-map-label text-muted">Search as I move the map</span>
+                    </div>
+                    <input type=submit class="hidden-xl-down">
                 </form>
             </div>
         </div>

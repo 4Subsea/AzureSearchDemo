@@ -1,22 +1,18 @@
 import { SearchApi } from "services/search-api";
-import { MultiCollectionSubscriber } from "common/multi-subscriber";
 
 export class Location {
-    static inject = [SearchApi, MultiCollectionSubscriber];
+    static inject = [SearchApi];
 
-    constructor(searchApi, subscriber) {
+    constructor(searchApi) {
         this.searchApi = searchApi;
-        this.subscriber = subscriber;
 
         this.queryText = "";
         this.location = {};
         this.results = []
         this.count = "";
         this.markers = [];
-
-        this.subscriber
-            .observe([this.results])
-            .onChanged(change => this.createMapMarkers());
+        this.radiusLimit = "";
+        this.mapSearch = false;
     }
 
     search() {
@@ -68,10 +64,6 @@ export class Location {
 
     attached() {
         this.initializeMap();
-    }
-
-    detached() {
-        this.subscriber.dispose();
     }
 
     onMapInitialized() {
