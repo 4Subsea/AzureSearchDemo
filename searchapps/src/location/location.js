@@ -101,6 +101,8 @@ export class Location {
                     this.searchWithinMapBoundaries();
                 }
             });
+
+            this.search();
         });
 
     }
