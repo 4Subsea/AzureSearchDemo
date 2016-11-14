@@ -102,3 +102,13 @@
 .same-height-container::first-child{
     margin-right: 20px;
 }
+
+.search-result img{
+    width: 100%;
+} 
+
+.result-count {
+    font-family: Montserrat;
+    padding: 10px;
+    text-transform: uppercase;
+}
