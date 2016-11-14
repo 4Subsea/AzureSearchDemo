@@ -75,7 +75,7 @@
 
 
 .search-result{
-    overflow: scroll;
+    overflow-y: scroll;
     height: 100%;
 }
 
@@ -102,4 +102,7 @@
     font-family: montserrat;
     padding: 10px;
     border-bottom: 1px solid #dce0e0;
+    font-size: 0.8em;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
