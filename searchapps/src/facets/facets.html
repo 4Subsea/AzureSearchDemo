@@ -1,0 +1,108 @@
+<template>
+    <require from="./facets.css"></require>
+
+    <div class="main-container">
+        <div class="container-fluid top-menu-bar">
+            <div class="container">
+                <div class="row">
+                    <div class="left-menu col-xs-5">
+                        <span>
+                            <span class="btn logo-text logo">&nbsp</span>
+                        <span class="btn logo-text">BEER</span>
+                        </span>
+                        <span class="slogan">The Beer market</span>
+                    </div>
+                    <nav class="right-menu nav nav-inline col-xs-7 row">
+                        <div class="col-xs-3"><a class="nav-link" href="#"><i class="fa fa-lg fa-dot-circle-o" aria-hidden="true"></i> Me</a></div>
+                        <div class="col-xs-3"><a class="nav-link" href="#"><i class="fa fa-lg fa-plus" aria-hidden="true"></i> Can</a></div>
+                        <div class="col-xs-3"><a class="nav-link" href="#"><i class="fa fa-lg fa-bell" aria-hidden="true"></i> Haz</a></div>
+                        <div class="col-xs-3"><a class="nav-link" href="#"><i class="fa fa-lg fa-user-circle" aria-hidden="true"></i> Beer</a></div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+        <div class="container search-area">
+            <div class="row">
+                <div class="facet-pane col-sm-4 card">
+                    <div class="sub-container">
+                        <form submit.delegate="search()" class="facet-form">
+                            <input class="form-control search-input" type="text" value.bind="query" placeholder="Search" id="example-text-input">
+
+                            <div>
+                                <div class="facet-group-title"><strong>Brewery</strong></div>
+                                <div repeat.for="facet of facets.breweries" class="form-check">
+                                    <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" model.bind="facet.value" checked.bind="selectedBrewery">
+                                    ${facet.value} (${facet.count})
+                                </label>
+                                </div>
+
+                                <div class="facet-group-title"><strong>Style</strong></div>
+                                <div repeat.for="facet of facets.stylename" class="form-check">
+                                    <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" model.bind="facet.value" checked.bind="selectedStyle">
+                                    ${facet.value} (${facet.count})
+                                </label>
+                                </div>
+
+                                <div class="facet-group-title"><strong>Alcohol by Volume</strong></div>
+                                <div repeat.for="facet of facets.abv" class="form-check">
+                                    <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" model.bind="facet" checked.bind="selectedAbv" matcher.bind="abvFacetMatcher">
+                                    <span if.bind="facet.from">${facet.from}%</span>
+                                     - <span if.bind="facet.to">${facet.to}%</span> (${facet.count})
+                                </label>
+                                </div>
+
+                                <div class="facet-group-title"><strong>Created</strong></div>
+                                <div repeat.for="facet of facets.created" class="form-check">
+                                    <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" model.bind="facet.value" checked.bind="selectedCreated">
+                                    ${facet.value} (${facet.count})
+                                </label>
+                                </div>
+
+                            </div>
+
+                            <div class="search-reset-buttons row same-height-container float-xs-right">
+                                <a href="#" click.delegate="clear()" class="search-reset-button">Reset</a>
+                                <input type="submit" value="Search" class="btn facet-search-button search-reset-button float-xs-right">
+                            </div>
+
+
+                        </form>
+                    </div>
+                </div>
+
+                <div class="main-pane col-sm-8 ">
+                    <div class="search-result card ">
+                        <div class="text-xs-right">Results: <strong>${count}</strong></div>
+                        <div class="list-group list-group-flush ">
+                            <div repeat.for="result of results " class="list-group-item ">
+                                <div class="media ">
+                                    <a class="media-left " href="# ">
+                                        <img if.bind="result.label " class="media-object media-left " src="${result.label}
+                                    " alt="Beer label ">
+                                        <img if.bind="!result.label " class="media-object media-left " src="https://placehold.it/254x254
+                                    " alt="Placeholder image when label is missing " />
+                                    </a>
+                                    <div class="media-body ">
+                                        <h4 class="media-heading ">${result.name}</h4>
+                                        <div if.bind="result.description ">${result.description}</div>
+                                        <div if.bind="!result.description " class="text-muted font-italic small ">Missing description</div>
+                                        <div class="row ">
+                                            <div class="text-muted col-sm-6 brewery-name ">${result.brewery}</div>
+                                            <div if.bind="result.alcoholPercentage" class="display-4 col-sm-6 "><strong>${result.alcoholPercentage} %</strong></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</template>

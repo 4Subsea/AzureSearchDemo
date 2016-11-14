@@ -1,0 +1,104 @@
+.main-container {
+    background-color: #F3FAFF;
+    font-family: Raleway;
+    min-height: 100vh;
+}
+
+.top-menu-bar {
+    background-color: #08C5FC;
+    line-height: 55px;
+    color: #FFF;
+}
+
+.top-menu-bar a {
+    color: #FFF;
+}
+
+.container {
+    max-width: 980px;
+}
+
+.right-menu {
+    background-color: #056EFC;
+    text-align: center;
+}
+
+.logo-text {
+    font-size: 14px;
+    font-family: Montserrat;
+    letter-spacing: 2px;
+    font-weight: bold;
+    border: 2px solid;
+    padding-right: 0.5rem;
+    padding-left: 0.5rem;
+}
+
+.logo.logo-text {
+    background-color: #056EFC;
+    margin-right: -6px;
+}
+
+.slogan {
+    margin-left: 5px;
+    font-size: 0.8rem;
+}
+
+.card {
+    border-radius: 0;
+}
+
+.sub-container {
+    width: 90%;
+    margin: auto;
+}
+
+.search-area {
+    margin-top: 20px;
+}
+
+.search-input {
+    margin: 1rem auto;
+    font-size: 1em;
+}
+
+.facet-pane {
+    font-size: 0.8em;
+}
+
+.facet-group-title {
+    margin: 10px auto;
+}
+
+.brewery-name {
+    margin-top: 20px;
+}
+
+.facet-search-button{
+    background-color: transparent;
+    border: 1px solid #06BEFB;
+    color: #0063FB;
+    border-radius: 2px;
+    
+}
+
+.facet-search-button:hover {
+    background-color: #F1F9FF;
+}
+
+.search-reset-buttons {
+    margin: 20px 0;
+}
+
+.search-reset-button {
+    display: table-cell;
+    vertical-align: bottom;
+}
+
+.same-height-container {
+    display: table;
+    width: 100%;
+}
+
+.same-height-container::first-child{
+    margin-right: 20px;
+}

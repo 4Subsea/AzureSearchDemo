@@ -7,41 +7,49 @@ export class Simple {
         this.api = api;
         this.results = [];
         this.queryText = '';
-        this.rawResult = '';
         this.count = null;
-        this.rawJson = '';
+    }
+
+    get hasResults() {
+        return this.results.length > 0;
     }
 
     search() {
         this.api
             .search(this.queryText)
             .then(x => {
+                console.log(x);
                 this.count = x.count;
                 this.results = x.results;
-                this.rawResult = JSON.stringify(x.raw, null, 4);
             });
-
     }
 
-    clear() {
-        this.results = [];
-        this.queryText = '';
-        this.rawResult = '';
-        this.count = null;
+    tired() {
+        this.queryText = "\"real kick\"";
+        this.search();
     }
 
     attached() {
-        let _class = this;
+        let _ = this;
         $(".search-input").autocomplete({
-            source: function(request, response) {
-                _class.api
+            source: function (request, response) {
+                _.api
                     .suggest(request.term)
                     .then(results => response(results));
             },
             minLength: 2,
-            select: function(event, ui) {
-                _class.queryText = ui.item.value;
+            select: function (event, ui) {
+                _.queryText = ui.item.value;
             }
         })
+            .data('ui-autocomplete')
+            ._renderItem = function (ul, item) {
+                item.value = item.value.replace(/<\/?\w*>/g, "");
+
+                return $("<li>")
+                    .attr("data-value", item.value)
+                    .append(item.label)
+                    .appendTo(ul);
+            }
     }
 }
