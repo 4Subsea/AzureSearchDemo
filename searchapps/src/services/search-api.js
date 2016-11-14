@@ -15,59 +15,16 @@ export class SearchApi {
     }
 
     faceted(query, filter) {
-        // return new Promise(resolve => {
-        //     var mapped = {
-        //         facets: null,
-        //         results: [],
-        //         count: 0,
-        //     };
-        //     resolve(mapped)
-        // });
-
-
         return new Promise(resolve => {
-            this.httpClient
-                .post("/search", {
-                    facets: [
-                        "stylename",
-                        "abv,values:5|10|15",
-                        "breweries",
-                        "created,interval:year"
-                    ],
-                    search: query,
-                    filter: filter,
-                    count: true
-                })
-                .then(result => {
-                    var jsonResponse = JSON.parse(result.response);
-                    var facets = jsonResponse["@search.facets"];
-                    var mapped = {
-                        facets: {
-                            stylename: facets.stylename,
-                            abv: facets.abv,
-                            breweries: facets.breweries,
-                            created: facets.created.map(x => {
-                                return {
-                                    value: new Date(x.value).getFullYear(),
-                                    count: x.count
-                                }
-                            }),
-                        },
-                        results: jsonResponse.value.map(x => {
-                            return {
-                                name: x.name,
-                                description: x.description,
-                                alcoholPercentage: x.abv,
-                                label: x.labelmediumimage,
-                                style: x.stylename,
-                                brewery: x.breweries[0]
-                            }
-                        }),
-                        count: jsonResponse["@odata.count"],
-                    }
+            var mapped = {
+                facets: null,
+                results: [],
+                count: 0,
+            };
+            resolve(mapped)
+        });
 
-                    resolve(mapped);
-                });
-        })
+        //demo2facetquery
+        //demo2facetquerythen
     }
 }
