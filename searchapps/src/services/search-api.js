@@ -23,7 +23,5 @@ export class SearchApi {
             };
             resolve(mapped)
         });
-
-        //demo2facetquery
     }
 }
