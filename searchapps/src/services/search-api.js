@@ -51,7 +51,6 @@ export class SearchApi {
                 })
                 .then(result => {
                     var results = JSON.parse(result.response).value;
-                    console.log(results);
                     resolve(results.map(x => x["@search.text"]));
                 });
         })
