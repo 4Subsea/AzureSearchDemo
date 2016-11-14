@@ -18,7 +18,6 @@ export class Simple {
         this.api
             .search(this.queryText)
             .then(x => {
-                console.log(x);
                 this.count = x.count;
                 this.results = x.results;
             });

@@ -15,44 +15,21 @@ export class SearchApi {
     }
 
     search(query) {
-        return new Promise(resolve => {
-            this.httpClient
-                .post("/search", {
-                    count: true,
-                    search: query
-                })
-                .then(result => {
-                    let jsonResult = JSON.parse(result.response);
-                    resolve({
-                        count: jsonResult["@odata.count"],
-                        results: jsonResult["value"].map(x => {
-                            return {
-                                name: x.name,
-                                description: x.description,
-                                label: x.labelmediumimage,
-                                style: x.stylename,
-                                brewery: x.breweries[0]
-                            }
-                        }),
-                        raw: jsonResult
-                    });
-                });
-        });
+        //demo1search
+        return new Promise(resolve => resolve({
+            count: 42,
+            results:
+            [{
+                name: "Tonald Drump",
+                description: "A perfect beer for Mexican food",
+                style: "American Pale Ale",
+                brewery: "Drump Brower"
+            }]
+        }));
     }
 
     suggest(query) {
-        return new Promise(resolve => {
-            this.httpClient
-                .post("/suggest", {
-                    search: query,
-                    suggesterName: "suggestBeerName",
-                    highlightPreTag: "<strong>",
-                    highlightPostTag: "</strong>"
-                })
-                .then(result => {
-                    var results = JSON.parse(result.response).value;
-                    resolve(results.map(x => x["@search.text"]));
-                });
-        })
+        //demo1suggest
+        return [];
     }
 }
