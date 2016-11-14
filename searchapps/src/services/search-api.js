@@ -25,6 +25,5 @@ export class SearchApi {
         });
 
         //demo2facetquery
-        //demo2facetquerythen
     }
 }
