@@ -42,6 +42,11 @@ export class Simple {
                 _.queryText = ui.item.value;
             }
         })
+            .keyup(function (e) {
+                if (e.which === 13) {
+                    $(".ui-autocomplete").hide();
+                }
+            })
             .data('ui-autocomplete')
             ._renderItem = function (ul, item) {
                 item.value = item.value.replace(/<\/?\w*>/g, "");
