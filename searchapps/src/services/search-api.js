@@ -14,21 +14,13 @@ export class SearchApi {
             })
     }
 
-    nearest(query, location, radiusLimit) {
-        let geoDistance = `geo.distance(brewerylocation, geography'POINT(${location.lng} ${location.lat})')`;
-        let filter = "";
-
-        if (radiusLimit) {
-            filter += `(${geoDistance} le ${radiusLimit})`;
-        }
-
+    nearest(query, location) {
         return new Promise(resolve => {
             this.httpClient
                 .post("/search", {
                     count: true,
                     search: query,
-                    filter: filter,
-                    orderby: geoDistance,
+                    orderby: `geo.distance(brewerylocation, geography'POINT(${location.lng} ${location.lat})')`,
                     top: 100
                 })
                 .then(result => {
@@ -51,34 +43,4 @@ export class SearchApi {
         });
     }
 
-    withinGeoBoundary(queryText, polygon) {
-        let polygonPoints = `${polygon.topLeft}, ${polygon.bottomLeft}, ${polygon.bottomRight}, ${polygon.topRight}, ${polygon.topLeft}`;
-
-        return new Promise(resolve => {
-            this.httpClient
-                .post("/search", {
-                    count: true,
-                    search: queryText,
-                    top: 1000,
-                    filter: `geo.intersects(brewerylocation, geography'POLYGON((${polygonPoints}))')`
-                })
-                .then(result => {
-                    let jsonResult = JSON.parse(result.response);
-                    resolve({
-                        count: jsonResult["@odata.count"],
-                        results: jsonResult["value"].map(x => {
-                            return {
-                                name: x.name,
-                                label: x.labelmediumimage,
-                                style: x.stylename,
-                                alcoholPercentage: x.abv,
-                                brewery: x.breweries[0],
-                                lng: x.brewerylocation.coordinates[0],
-                                lat: x.brewerylocation.coordinates[1]
-                            }
-                        })
-                    });
-                });
-        });
-    }
 }
