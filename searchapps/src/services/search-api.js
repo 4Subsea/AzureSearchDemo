@@ -30,6 +30,6 @@ export class SearchApi {
 
     suggest(query) {
         //demo1suggest
-        return [];
+        return new Promise(resolve => resolve([]));
     }
 }
