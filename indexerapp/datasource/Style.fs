@@ -13,7 +13,7 @@ type Style(id: int, name: string) =
 [<AutoOpen>]
 type Styles =
     static member Load(apiKey: string) = 
-        let uri = String.Format("http://api.brewerydb.com/v2/styles?key={0}", apiKey)
+        let uri = String.Format("https://api.brewerydb.com/v2/styles?key={0}", apiKey)
         let styles= StyleJson.Load(uri)
 
         query {

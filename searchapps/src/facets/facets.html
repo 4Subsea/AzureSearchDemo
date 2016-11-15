@@ -29,7 +29,7 @@
                             <input class="form-control search-input" type="text" value.bind="query" placeholder="Search" id="example-text-input">
 
                             <div>
-                                <div class="facet-group-title"><strong>Brewery</strong></div>
+                                <div if.bind="facets.breweries" class="facet-group-title"><strong>Brewery</strong></div>
                                 <div repeat.for="facet of facets.breweries" class="form-check">
                                     <label class="form-check-label">
                                 <input class="form-check-input" type="checkbox" model.bind="facet.value" checked.bind="selectedBrewery">
@@ -37,7 +37,7 @@
                                 </label>
                                 </div>
 
-                                <div class="facet-group-title"><strong>Style</strong></div>
+                                <div if.bind="facets.stylename" class="facet-group-title"><strong>Style</strong></div>
                                 <div repeat.for="facet of facets.stylename" class="form-check">
                                     <label class="form-check-label">
                                 <input class="form-check-input" type="checkbox" model.bind="facet.value" checked.bind="selectedStyle">
@@ -45,7 +45,7 @@
                                 </label>
                                 </div>
 
-                                <div class="facet-group-title"><strong>Alcohol by Volume</strong></div>
+                                <div if.bind="facets.abv" class="facet-group-title"><strong>Alcohol by Volume</strong></div>
                                 <div repeat.for="facet of facets.abv" class="form-check">
                                     <label class="form-check-label">
                                 <input class="form-check-input" type="checkbox" model.bind="facet" checked.bind="selectedAbv" matcher.bind="abvFacetMatcher">
@@ -54,7 +54,7 @@
                                 </label>
                                 </div>
 
-                                <div class="facet-group-title"><strong>Created</strong></div>
+                                <div if.bind="facets.created" class="facet-group-title"><strong>Created</strong></div>
                                 <div repeat.for="facet of facets.created" class="form-check">
                                     <label class="form-check-label">
                                 <input class="form-check-input" type="checkbox" model.bind="facet.value" checked.bind="selectedCreated">
@@ -76,18 +76,17 @@
 
                 <div class="main-pane col-sm-8 ">
                     <div class="search-result card ">
-                        <div class="text-xs-right">Results: <strong>${count}</strong></div>
+                        <div class="text-xs-right result-count">Results: <strong>${count}</strong></div>
                         <div class="list-group list-group-flush ">
                             <div repeat.for="result of results " class="list-group-item ">
-                                <div class="media ">
-                                    <a class="media-left " href="# ">
-                                        <img if.bind="result.label " class="media-object media-left " src="${result.label}
-                                    " alt="Beer label ">
-                                        <img if.bind="!result.label " class="media-object media-left " src="https://placehold.it/254x254
-                                    " alt="Placeholder image when label is missing " />
-                                    </a>
-                                    <div class="media-body ">
-                                        <h4 class="media-heading ">${result.name}</h4>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <img if.bind="result.label " src="${result.label}" alt="Beer label">
+                                        <img if.bind="!result.label " src="https://placehold.it/200x200" alt="Placeholder image when label is missing" />
+                                    </div>
+
+                                    <div class="col-md-8">
+                                        <h4>${result.name}</h4>
                                         <div if.bind="result.description ">${result.description}</div>
                                         <div if.bind="!result.description " class="text-muted font-italic small ">Missing description</div>
                                         <div class="row ">

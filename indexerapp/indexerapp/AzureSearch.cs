@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using IndexerApp.Dsl;
 using Microsoft.Azure.Search;
 using Microsoft.Azure.Search.Models;
 
@@ -34,7 +33,7 @@ namespace IndexerApp
                 Indexes.Delete(ix);
         }
 
-        public void CreateIndex(string name, IEnumerable<Field> fields, IEnumerable<ScoringProfile> scoringProfiles)
+        public void CreateIndex(string name, IEnumerable<Field> fields, IEnumerable<ScoringProfile> scoringProfiles, IEnumerable<Suggester> suggesters)
         {
             var indexName = IndexNamed(name);
             if (Indexes.Exists(indexName))
@@ -44,13 +43,12 @@ namespace IndexerApp
             if (allFields.SingleOrDefault(f => f.Name.ToLowerInvariant() == IdColumn && f.IsKey) == null)
                 throw new ArgumentException("No Key column defined", nameof(fields));
 
-            var profiles = scoringProfiles.ToList();
-
             var definition = new Index
             {
                 Name = indexName,
                 Fields = allFields,
-                ScoringProfiles = profiles
+                ScoringProfiles = scoringProfiles?.ToList(),
+                Suggesters = suggesters?.ToList()
             };
 
             Indexes.Create(definition);
