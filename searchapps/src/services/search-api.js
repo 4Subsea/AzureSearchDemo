@@ -17,7 +17,7 @@ export class SearchApi {
     search(query) {
         //demo1search
         return new Promise(resolve => resolve({
-            count: 42,
+            count: 1,
             results:
             [{
                 name: "Tonald Drump",
