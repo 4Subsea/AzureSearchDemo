@@ -19,7 +19,8 @@ export class SearchApi {
             this.httpClient
                 .post("/search", {
                     count: true,
-                    search: query
+                    search: query,
+                    queryType: "full"
                 })
                 .then(result => {
                     let jsonResult = JSON.parse(result.response);
@@ -67,7 +68,8 @@ export class SearchApi {
                     ],
                     search: query,
                     filter: filter,
-                    count: true
+                    count: true,
+                    queryType: "full"
                 })
                 .then(result => {
                     var jsonResponse = JSON.parse(result.response);
@@ -117,7 +119,8 @@ export class SearchApi {
                     search: query,
                     filter: filter,
                     orderby: geoDistance,
-                    top: 100
+                    top: 100,
+                    queryType: "full"
                 })
                 .then(result => {
                     let jsonResult = JSON.parse(result.response);
@@ -148,7 +151,8 @@ export class SearchApi {
                     count: true,
                     search: queryText,
                     top: 1000,
-                    filter: `geo.intersects(brewerylocation, geography'POLYGON((${polygonPoints}))')`
+                    filter: `geo.intersects(brewerylocation, geography'POLYGON((${polygonPoints}))')`,
+                    queryType: "full"
                 })
                 .then(result => {
                     let jsonResult = JSON.parse(result.response);
