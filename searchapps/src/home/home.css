@@ -1,0 +1,38 @@
+#home {
+    height: 100%;
+    min-height: 100%;
+    min-height: 100vh;
+    background-image: url("content/beer.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    color: #FFF;
+}
+
+.title {
+    font-family: montserrat;
+    padding-top: 30vh;
+    font-size: 4.5rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+#home nav{
+    margin: 30px 0;
+}
+
+#home .nav-link {
+    color: #fff;
+    border: 2px #FFF solid;
+    padding: 20px 40px;
+    margin: 20px;
+    text-transform: uppercase;
+    font-family: Raleway;
+    letter-spacing: 2px;
+}
+
+#home .nav-link:hover {
+    background-color: rgba(255,255,255,0.8);
+    transition: background-color 500ms linear;
+    transition: color 500ms linear;
+    color: #333;
+}
