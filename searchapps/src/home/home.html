@@ -1,7 +1,16 @@
 <template>
     <require from="./home.css"></require>
 
-    
+    <div id="home" class="container-fluid text-xs-center">
+        <h1 class="title">Azure Search Demo</h1>
 
-    <h1>At Home</h1>
+        <nav>
+            <ul class="nav nav-inline">
+                <li repeat.for="row of router.navigation" class="nav-item">
+                    <a class="nav-link" href.bind="row.href">${row.title}</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
 </template>
