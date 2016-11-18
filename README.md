@@ -10,9 +10,7 @@ https://vimeo.com/191753332
 
 ###The running demos: 
 
-https://4subsea.github.io/AzureSearchDemo/searchapps/#simple
-https://4subsea.github.io/AzureSearchDemo/searchapps/#facets
-https://4subsea.github.io/AzureSearchDemo/searchapps/#location
+https://4subsea.github.io/AzureSearchDemo/searchapps/
 
 ## Running the search apps locally
 
