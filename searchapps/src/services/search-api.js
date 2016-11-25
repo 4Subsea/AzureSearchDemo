@@ -150,7 +150,7 @@ export class SearchApi {
                 .post("/search", {
                     count: true,
                     search: queryText,
-                    top: 1000,
+                    top: 500,
                     filter: `geo.intersects(brewerylocation, geography'POLYGON((${polygonPoints}))')`,
                     queryType: "full"
                 })
