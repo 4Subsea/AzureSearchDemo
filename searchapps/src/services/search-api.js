@@ -15,6 +15,7 @@ export class SearchApi {
     }
 
     faceted(query, filter) {
+        //demo2facetquery
         return new Promise(resolve => {
             var mapped = {
                 facets: null,
@@ -24,4 +25,6 @@ export class SearchApi {
             resolve(mapped)
         });
     }
+
+
 }
